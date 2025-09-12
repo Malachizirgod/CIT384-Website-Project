@@ -1,7 +1,7 @@
 # Campus Shop (Demo)
 
 
-A minimal, class-friendly e‑commerce demo: HTML/CSS/JS frontend with a future PHP checkout. No real payments.
+A minimal e‑commerce demo: HTML/CSS/JS frontend with a future PHP checkout. No real payments.
 
 
 ## Quick start
