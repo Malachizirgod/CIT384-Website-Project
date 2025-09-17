@@ -1,8 +1,6 @@
 # Campus Shop (Demo)
 
 
-A minimal e‑commerce demo: HTML/CSS/JS frontend with a future PHP checkout. No real payments.
-
 
 ## Quick start
 ```bash
@@ -33,5 +31,3 @@ cart.js
 - For PHP checkout (sessions, order saving, email), deploy to a PHP host (e.g., DreamHost/Hostinger/Render) and move files to a `/public` web root with `index.php`.
 
 
-## Security (when adding PHP)
-- Use prepared statements (PDO), CSRF tokens, server-side validation, and HTTPS (Let’s Encrypt).
