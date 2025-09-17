@@ -1,64 +1,69 @@
-const $ = (sel, root=document) => root.querySelector(sel);
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const CART_KEY = 'campus_cart_v1';
+const THEME_KEY = 'campus_theme_v1';
+
+function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY)) || {}; } catch { return {}; } }
+function setCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); update(); }
+function money(n){ return `$${n.toFixed(2)}`; }
+function setTheme(t){ document.documentElement.setAttribute('data-theme', t); localStorage.setItem(THEME_KEY, t); $('#theme-toggle').textContent = t === 'light' ? '🌞' : '🌙'; }
+function toggleTheme(){ const cur = localStorage.getItem(THEME_KEY) || 'dark'; setTheme(cur === 'dark' ? 'light' : 'dark'); }
+function toast(msg){ const wrap = $('#toast-wrap'); if(!wrap) return; const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; wrap.appendChild(el); setTimeout(()=>el.remove(), 2200); }
+
 function update(){
-$('#year').textContent = new Date().getFullYear();
-const cart = getCart();
-const items = Object.values(cart);
-const count = items.reduce((s, i) => s + i.qty, 0);
-$('#cart-count').textContent = count;
+  $('#year').textContent = new Date().getFullYear();
+  const cart = getCart(); const items = Object.values(cart);
+  const count = items.reduce((s,i)=>s+i.qty,0); $('#cart-count').textContent = count;
 
-
-const list = $('#cart-items');
-list.innerHTML = '';
-let subtotal = 0;
-if(items.length === 0){
-list.innerHTML = '<p>Your cart is empty. <a href="index.html">Go shopping →</a></p>';
-} else {
-items.forEach(i => {
-subtotal += i.price * i.qty;
-const el = document.createElement('div');
-el.className = 'cart-item';
-el.innerHTML = `
-<img src="assets/img/${i.id.includes('hoodie') ? 'hoodie' : i.id.includes('tee') ? 'tee' : 'notebook'}.jpg" alt="${i.name}">
-<div>
-<div class="row"><strong>${i.name}</strong><span>${money(i.price)}</span></div>
-<div class="quantity">
-<button data-act="dec" data-id="${i.id}">−</button>
-<span>Qty: ${i.qty}</span>
-<button data-act="inc" data-id="${i.id}">+</button>
-<button data-act="rm" data-id="${i.id}">Remove</button>
-</div>
-</div>
-<div><strong>${money(i.price * i.qty)}</strong></div>`;
-list.appendChild(el);
-});
+  const list = $('#cart-items'); list.innerHTML = '';
+  let subtotal = 0;
+  if(items.length === 0){
+    list.innerHTML = '<p>Your cart is empty. <a href="index.html">Go shopping →</a></p>';
+    $('#checkout-btn').disabled = true;
+  } else {
+    $('#checkout-btn').disabled = false;
+    items.forEach(i => {
+      subtotal += i.price * i.qty;
+      const el = document.createElement('div');
+      el.className = 'cart-item fade-in is-visible';
+      el.innerHTML = `
+        <img src="assets/img/${i.id.includes('hoodie') ? 'hoodie' : i.id.includes('tee') ? 'tee' : 'notebook'}.jpg" alt="${i.name}">
+        <div>
+          <div class="row"><strong>${i.name}</strong><span>${money(i.price)}</span></div>
+          <div class="quantity">
+            <button data-act="dec" data-id="${i.id}">−</button>
+            <span>Qty: ${i.qty}</span>
+            <button data-act="inc" data-id="${i.id}">+</button>
+            <button data-act="rm" data-id="${i.id}">Remove</button>
+          </div>
+        </div>
+        <div><strong>${money(i.price * i.qty)}</strong></div>`;
+      list.appendChild(el);
+    });
+  }
+  $('#cart-subtotal').textContent = money(subtotal);
 }
-$('#cart-subtotal').textContent = money(subtotal);
-}
-
 
 function onClick(e){
-const btn = e.target.closest('button[data-act]');
-if(!btn) return;
-const id = btn.dataset.id;
-const act = btn.dataset.act;
-const cart = getCart();
-if(!cart[id]) return;
-if(act === 'inc') cart[id].qty++;
-if(act === 'dec') cart[id].qty = Math.max(0, cart[id].qty - 1);
-if(act === 'rm') delete cart[id];
-if(cart[id] && cart[id].qty === 0) delete cart[id];
-setCart(cart);
+  const btn = e.target.closest('button[data-act]'); if(!btn) return;
+  const id = btn.dataset.id; const act = btn.dataset.act;
+  const cart = getCart(); if(!cart[id]) return;
+  if(act === 'inc') cart[id].qty++;
+  if(act === 'dec') cart[id].qty = Math.max(0, cart[id].qty - 1);
+  if(act === 'rm') { delete cart[id]; toast('Removed from cart'); }
+  if(cart[id] && cart[id].qty === 0) delete cart[id];
+  setCart(cart);
 }
-
 
 function onCheckout(){
-// Placeholder: later we will POST to PHP endpoint
-alert('Checkout demo — next step is wiring to PHP backend.');
+  toast('Checkout demo — server wiring next');
+  // later: POST cart JSON to /checkout.php
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
-update();
-$('#cart-items').addEventListener('click', onClick);
-$('#checkout-btn').addEventListener('click', onCheckout);
+  setTheme(localStorage.getItem(THEME_KEY) || 'dark');
+  $('#theme-toggle')?.addEventListener('click', toggleTheme);
+  update();
+  $('#cart-items').addEventListener('click', onClick);
+  $('#checkout-btn').addEventListener('click', onCheckout);
 });
