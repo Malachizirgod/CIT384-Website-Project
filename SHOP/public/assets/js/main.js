@@ -57,6 +57,18 @@ function renderProducts(list=window.CATALOG){
   $$('.fade-in').forEach(el => io.observe(el));
 }
 
+function renderProduct(product) {
+  return `
+    <div class="product-card">
+      <img src="${product.img}" alt="${product.name}" />
+      <h3>${product.name}</h3>
+      <p>${product.desc || ''}</p>
+      <p>$${product.price.toFixed(2)}</p>
+      <button class="btn add-to-cart" data-id="${product.id}">Add to Cart</button>
+    </div>
+  `;
+}
+
 function wireSearch(){
   const input = $('#search'); if(!input) return;
   input.addEventListener('input', () => {
