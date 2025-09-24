@@ -86,5 +86,137 @@ function boot(){
   $('#theme-toggle')?.addEventListener('click', toggleTheme);
   renderProducts();
   wireSearch();
+
+  document.querySelectorAll('.product-card img').forEach(img => {
+    const productId = img.closest('.product-card').dataset.id;
+    const product = window.CATALOG.find(p => p.id === productId);
+    if (product && product.imgs && product.imgs.length > 1) {
+      let idx = 0;
+      img.addEventListener('mouseenter', function () {
+        idx = (idx + 1) % product.imgs.length;
+        img.src = product.imgs[idx];
+      });
+      img.addEventListener('mouseleave', function () {
+        img.src = product.imgs[0];
+        idx = 0;
+      });
+    }
+  });
+
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('click', function () {
+      const productId = card.dataset.id;
+      const product = window.CATALOG.find(p => p.id === productId);
+      if (!product) return;
+      document.getElementById('quickview-title').textContent = product.name;
+      document.getElementById('quickview-description').textContent = product.desc || '';
+      document.getElementById('quickview-price').textContent = `$${product.price.toFixed(2)}`;
+      document.getElementById('quickview-add').dataset.id = product.id;
+      // Images
+      const imgDiv = document.getElementById('quickview-image');
+      imgDiv.innerHTML = '';
+      if (product.imgs && product.imgs.length) {
+        product.imgs.forEach(src => {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = product.name;
+          imgDiv.appendChild(img);
+        });
+      } else {
+        const img = document.createElement('img');
+        img.src = product.img;
+        img.alt = product.name;
+        imgDiv.appendChild(img);
+      }
+      document.getElementById('quickview').style.display = 'block';
+    });
+  });
+
+  // Close modal
+  document.querySelectorAll('#quickview .close').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('quickview').style.display = 'none';
+    });
+  });
+
+  document.getElementById('quickview-add').addEventListener('click', function () {
+    const id = this.dataset.id;
+    const p = window.CATALOG.find(x => x.id === id); if(!p) return;
+    const cart = getCart();
+    cart[id] = cart[id] || { id, name: p.name, price: p.price, qty: 0 };
+    cart[id].qty++;
+    setCart(cart);
+    confettiBurst(document.querySelector('#quickview .modal-content'));
+  });
 }
 document.addEventListener('DOMContentLoaded', boot);
+
+function confettiBurst(target) {
+  const confetti = document.createElement('div');
+  confetti.className = 'confetti';
+  for (let i = 0; i < 30; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'confetti-dot';
+    dot.style.left = `${Math.random() * 100}%`;
+    dot.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
+    confetti.appendChild(dot);
+  }
+  target.appendChild(confetti);
+  setTimeout(() => confetti.remove(), 1200);
+}
+
+// Add after Quick View logic
+
+function addRecentlyViewed(id) {
+  let viewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+  viewed = viewed.filter(pid => pid !== id);
+  viewed.unshift(id);
+  if (viewed.length > 5) viewed = viewed.slice(0, 5);
+  localStorage.setItem('recentlyViewed', JSON.stringify(viewed));
+}
+
+document.querySelectorAll('.product-card').forEach(card => {
+  card.addEventListener('click', function () {
+    addRecentlyViewed(card.dataset.id);
+    renderRecentlyViewed();
+  });
+});
+
+function renderRecentlyViewed() {
+  const viewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+  const container = document.getElementById('recently-viewed');
+  if (!container) return;
+  container.innerHTML = viewed.map(id => {
+    const p = window.CATALOG.find(prod => prod.id === id);
+    if (!p) return '';
+    return `<img src="${p.img}" alt="${p.name}" title="${p.name}" style="width:48px;height:48px;margin:2px;border-radius:6px;">`;
+  }).join('');
+}
+
+// On page load
+document.addEventListener('DOMContentLoaded', renderRecentlyViewed);
+
+// Add after DOMContentLoaded
+
+const couponCode = "CAMPUS10";
+const scratch = document.getElementById('coupon-scratch');
+if (scratch) {
+  scratch.addEventListener('click', function revealCoupon() {
+    scratch.innerHTML = `<strong>Your Coupon: ${couponCode}</strong>`;
+    scratch.style.background = '#fffbe6';
+    scratch.removeEventListener('click', revealCoupon);
+  });
+}
+
+// Add after DOMContentLoaded
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+}
+document.getElementById('light-theme').onclick = () => setTheme('light');
+document.getElementById('dark-theme').onclick = () => setTheme('dark');
+
+// On load
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) setTheme(savedTheme);
