@@ -1,20 +1,20 @@
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Campus Shop</title>
-<link rel="stylesheet" href="assets/styles.css" />
-</head>
-<body>
-<header class="container header">
-  <h1>Campus Shop</h1>
-  <nav>
-    <input id="search" class="search" type="search" placeholder="Search products…" aria-label="Search products">
-    <button id="theme-toggle" class="btn ghost" aria-label="Toggle theme">🔍</button>
-    <a href="index.html" class="active">Store</a>
-    <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
-  </nav>
-</header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Campus Shop</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+  <header class="container header">
+    <h1>Campus Shop</h1>
+    <nav>
+      <input id="search" class="search" type="search" placeholder="Search products…" aria-label="Search products">
+      <button id="theme-toggle" class="btn ghost" aria-label="Toggle theme">🔍</button>
+      <a href="index.html" class="active">Store</a>
+      <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
 
 
 
@@ -36,6 +36,46 @@
 
 <script src="assets/js/products.js"></script>
 <script src="assets/js/main.js"></script>
+
+<div id="toast-wrap" aria-live="polite" aria-atomic="true"></div>
+
+<!-- theme-panel -->
+<div id="theme-panel">
+  <button id="light-theme" class="btn" aria-label="Light theme">☀️</button>
+  <button id="dark-theme" class="btn" aria-label="Dark theme">🌙</button>
+</div>
+
+<!-- Quick View Modal -->
+<div id="quickview" class="modal">
+  <div class="modal-content">
+    <span class="close" aria-label="Close modal">&times;</span>
+    <h2>Product Details</h2>
+    <div id="quickview-image"></div>
+    <div id="quickview-info">
+      <h3 id="quickview-title"></h3>
+      <p id="quickview-description"></p>
+      <p id="quickview-price"></p>
+      <button id="quickview-add" class="btn">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- Coupon Scratch-Card Modal -->
+<div id="coupon-modal" class="modal coupon">
+  <div class="modal-content">
+    <span class="close" aria-label="Close modal">&times;</span>
+    <h2>Scratch to Reveal Coupon</h2>
+    <div id="coupon-scratch" class="scratch-card">
+      <p>Scratch here to reveal your coupon code!</p>
+    </div>
+  </div>
+</div>
+
+<!-- Controls that open panels -->
+<div id="floating-actions">
+  <button id="quickview-toggle" class="btn" aria-label="Quick view">👁️</button>
+  <button id="coupon-toggle" class="btn" aria-label="Reveal coupon">🎟️</button>
+</div>
 
 <div id="toast-wrap" aria-live="polite" aria-atomic="true"></div>
 
