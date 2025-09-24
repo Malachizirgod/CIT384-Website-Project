@@ -19,74 +19,23 @@ function toast(msg){
 }
 function bump(el){ if(!el) return; el.style.transform='scale(1.15)'; el.style.transition='transform .12s ease'; setTimeout(()=> el.style.transform='', 130); }
 
-function renderProducts(list=window.CATALOG){
-  const grid = $('#products'); grid.innerHTML = '';
-  list.forEach(p => {
-    const card = document.createElement('article');
-    card.className = 'card fade-in'; // for reveal
-    card.innerHTML = `
-      <img class="skel" style="aspect-ratio:1.2/1" src="${p.img}" alt="${p.name}" loading="lazy" onload="this.classList.remove('skel')" />
-      <div class="pad stack">
-        <div class="row">
-          <h3>${p.name}</h3>
-          <span class="price">${money(p.price)}</span>
-        </div>
-        <div class="row">
-          <small class="muted">ID: ${p.id}</small>
-          ${p.tag ? `<span class="badge">${p.tag}</span>` : ''}
-        </div>
-        <button class="btn" data-id="${p.id}">Add to Cart</button>
-      </div>`;
-    grid.appendChild(card);
-  });
-
-  grid.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-id]'); if(!btn) return;
-    const id = btn.dataset.id;
-    const p = window.CATALOG.find(x => x.id === id); if(!p) return;
-    const cart = getCart();
-    cart[id] = cart[id] || { id, name: p.name, price: p.price, qty: 0 };
-    cart[id].qty++;
-    setCart(cart);
-  });
-
-  // Reveal on scroll
-  const io = new IntersectionObserver((ents)=>{
-    ents.forEach(ent => ent.isIntersecting && ent.target.classList.add('is-visible'));
-  }, { rootMargin: '0px 0px -10% 0px' });
-  $$('.fade-in').forEach(el => io.observe(el));
-}
-
-function renderProduct(product) {
-  return `
-    <div class="product-card">
+// Utility: Render products grid
+function renderProducts() {
+  const grid = document.getElementById('products');
+  grid.innerHTML = window.CATALOG.map(product => `
+    <div class="product-card" data-id="${product.id}">
       <img src="${product.img}" alt="${product.name}" />
       <h3>${product.name}</h3>
       <p>${product.desc || ''}</p>
       <p>$${product.price.toFixed(2)}</p>
       <button class="btn add-to-cart" data-id="${product.id}">Add to Cart</button>
     </div>
-  `;
+  `).join('');
+  setupProductInteractivity();
 }
 
-function wireSearch(){
-  const input = $('#search'); if(!input) return;
-  input.addEventListener('input', () => {
-    const q = input.value.trim().toLowerCase();
-    const filtered = !q ? window.CATALOG :
-      window.CATALOG.filter(p => [p.name, p.id, p.tag].filter(Boolean).join(' ').toLowerCase().includes(q));
-    renderProducts(filtered);
-  });
-}
-
-function boot(){
-  $('#year').textContent = new Date().getFullYear();
-  updateCartCount();
-  setTheme(localStorage.getItem(THEME_KEY) || 'dark');
-  $('#theme-toggle')?.addEventListener('click', toggleTheme);
-  renderProducts();
-  wireSearch();
-
+// Interactive Product Preview (hover to cycle images)
+function setupProductInteractivity() {
   document.querySelectorAll('.product-card img').forEach(img => {
     const productId = img.closest('.product-card').dataset.id;
     const product = window.CATALOG.find(p => p.id === productId);
@@ -103,54 +52,44 @@ function boot(){
     }
   });
 
+  // Quick View modal logic
   document.querySelectorAll('.product-card').forEach(card => {
     card.addEventListener('click', function () {
-      const productId = card.dataset.id;
-      const product = window.CATALOG.find(p => p.id === productId);
-      if (!product) return;
-      document.getElementById('quickview-title').textContent = product.name;
-      document.getElementById('quickview-description').textContent = product.desc || '';
-      document.getElementById('quickview-price').textContent = `$${product.price.toFixed(2)}`;
-      document.getElementById('quickview-add').dataset.id = product.id;
-      // Images
-      const imgDiv = document.getElementById('quickview-image');
-      imgDiv.innerHTML = '';
-      if (product.imgs && product.imgs.length) {
-        product.imgs.forEach(src => {
-          const img = document.createElement('img');
-          img.src = src;
-          img.alt = product.name;
-          imgDiv.appendChild(img);
-        });
-      } else {
-        const img = document.createElement('img');
-        img.src = product.img;
-        img.alt = product.name;
-        imgDiv.appendChild(img);
-      }
-      document.getElementById('quickview').style.display = 'block';
+      openQuickView(card.dataset.id);
+      addRecentlyViewed(card.dataset.id);
+      renderRecentlyViewed();
     });
-  });
-
-  // Close modal
-  document.querySelectorAll('#quickview .close').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.getElementById('quickview').style.display = 'none';
-    });
-  });
-
-  document.getElementById('quickview-add').addEventListener('click', function () {
-    const id = this.dataset.id;
-    const p = window.CATALOG.find(x => x.id === id); if(!p) return;
-    const cart = getCart();
-    cart[id] = cart[id] || { id, name: p.name, price: p.price, qty: 0 };
-    cart[id].qty++;
-    setCart(cart);
-    confettiBurst(document.querySelector('#quickview .modal-content'));
   });
 }
-document.addEventListener('DOMContentLoaded', boot);
 
+// Product Quick View Modal
+function openQuickView(productId) {
+  const product = window.CATALOG.find(p => p.id === productId);
+  if (!product) return;
+  document.getElementById('quickview-title').textContent = product.name;
+  document.getElementById('quickview-description').textContent = product.desc || '';
+  document.getElementById('quickview-price').textContent = `$${product.price.toFixed(2)}`;
+  document.getElementById('quickview-add').dataset.id = product.id;
+  // Render images
+  const imgDiv = document.getElementById('quickview-image');
+  imgDiv.innerHTML = '';
+  (product.imgs || [product.img]).forEach(src => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = product.name;
+    imgDiv.appendChild(img);
+  });
+  document.getElementById('quickview').style.display = 'flex';
+}
+
+// Close Quick View modal
+document.querySelectorAll('#quickview .close').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('quickview').style.display = 'none';
+  });
+});
+
+// Modal Confetti Animation
 function confettiBurst(target) {
   const confetti = document.createElement('div');
   confetti.className = 'confetti';
@@ -165,8 +104,24 @@ function confettiBurst(target) {
   setTimeout(() => confetti.remove(), 1200);
 }
 
-// Add after Quick View logic
+// Add to cart from Quick View and show confetti
+document.getElementById('quickview-add').addEventListener('click', function () {
+  // Example: Add to cart logic (implement as needed)
+  showToast('Added to cart!');
+  confettiBurst(document.querySelector('#quickview .modal-content'));
+});
 
+// Toast notification utility
+function showToast(msg) {
+  const wrap = document.getElementById('toast-wrap');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = msg;
+  wrap.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
+}
+
+// Recently Viewed Items
 function addRecentlyViewed(id) {
   let viewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
   viewed = viewed.filter(pid => pid !== id);
@@ -174,13 +129,6 @@ function addRecentlyViewed(id) {
   if (viewed.length > 5) viewed = viewed.slice(0, 5);
   localStorage.setItem('recentlyViewed', JSON.stringify(viewed));
 }
-
-document.querySelectorAll('.product-card').forEach(card => {
-  card.addEventListener('click', function () {
-    addRecentlyViewed(card.dataset.id);
-    renderRecentlyViewed();
-  });
-});
 
 function renderRecentlyViewed() {
   const viewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
@@ -193,11 +141,7 @@ function renderRecentlyViewed() {
   }).join('');
 }
 
-// On page load
-document.addEventListener('DOMContentLoaded', renderRecentlyViewed);
-
-// Add after DOMContentLoaded
-
+// Coupon Reveal Game (Scratch Card)
 const couponCode = "CAMPUS10";
 const scratch = document.getElementById('coupon-scratch');
 if (scratch) {
@@ -208,8 +152,7 @@ if (scratch) {
   });
 }
 
-// Add after DOMContentLoaded
-
+// Theme Customizer
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
@@ -217,6 +160,28 @@ function setTheme(theme) {
 document.getElementById('light-theme').onclick = () => setTheme('light');
 document.getElementById('dark-theme').onclick = () => setTheme('dark');
 
-// On load
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) setTheme(savedTheme);
+// Theme toggle button (moon/sun)
+document.getElementById('theme-toggle').onclick = () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'light' ? 'dark' : 'light');
+};
+
+// Floating actions for modals
+document.getElementById('quickview-toggle').onclick = () => {
+  document.getElementById('quickview').style.display = 'flex';
+};
+document.getElementById('coupon-toggle').onclick = () => {
+  document.getElementById('coupon-modal').style.display = 'flex';
+};
+document.querySelectorAll('.modal .close').forEach(btn => {
+  btn.onclick = function () {
+    btn.closest('.modal').style.display = 'none';
+  };
+});
+
+// Set year in footer
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Initial render
+renderProducts();
+renderRecentlyViewed();

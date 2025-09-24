@@ -1,43 +1,29 @@
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Your Cart • Campus Shop</title>
+  <title>Cart - Campus Shop</title>
   <link rel="stylesheet" href="assets/styles.css" />
-  </head>
+</head>
 <body>
-<header class="container header">
-  <h1>Your Cart</h1>
-  <nav>
-    <button id="theme-toggle" class="btn ghost" aria-label="Toggle theme">🔍</button>
-    <a href="index.html">Store</a>
-    <a href="cart.html" class="active">Cart (<span id="cart-count">0</span>)</a>
-  </nav>
-</header>
-
-
-
-<main class="container">
-<section id="cart-items" class="stack"></section>
-<div class="cart-summary">
-<div class="row">
-<span>Subtotal</span>
-<strong id="cart-subtotal">$0.00</strong>
-</div>
-<button id="checkout-btn" class="btn">Checkout (Demo)</button>
-</div>
-</main>
-
-
-<footer class="container footer">
-<p>© <span id="year"></span> Campus Shop</p>
-</footer>
-
-
-<script src="assets/js/products.js"></script>
-<script src="assets/js/cart.js"></script>
-
-<div id="toast-wrap" aria-live="polite" aria-atomic="true"></div>
-
+  <header class="container header">
+    <h1>Campus Shop</h1>
+    <nav>
+      <a href="index.html">Store</a>
+      <a href="cart.html" class="active">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+  <main class="container">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <div id="cart-summary"></div>
+    <a href="index.html" class="btn">Continue Shopping</a>
+  </main>
+  <footer class="container footer">
+    <p>© <span id="year"></span> Campus Shop</p>
+  </footer>
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/cart.js"></script>
 </body>
 </html>

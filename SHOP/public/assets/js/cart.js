@@ -3,8 +3,8 @@ const $$ = (s, r=document) => [...r.querySelectorAll(s)];
 const CART_KEY = 'campus_cart_v1';
 const THEME_KEY = 'campus_theme_v1';
 
-function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY)) || {}; } catch { return {}; } }
-function setCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); update(); }
+function getCart(){ return JSON.parse(localStorage.getItem('cart') || '{}'); }
+function setCart(c){ localStorage.setItem('cart', JSON.stringify(c)); update(); }
 function money(n){ return `$${n.toFixed(2)}`; }
 function setTheme(t){ document.documentElement.setAttribute('data-theme', t); localStorage.setItem(THEME_KEY, t); $('#theme-toggle').textContent = t === 'light' ? '🌞' : '🌙'; }
 function toggleTheme(){ const cur = localStorage.getItem(THEME_KEY) || 'dark'; setTheme(cur === 'dark' ? 'light' : 'dark'); }
@@ -67,3 +67,72 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#cart-items').addEventListener('click', onClick);
   $('#checkout-btn').addEventListener('click', onCheckout);
 });
+
+
+// Simple cart implementation using localStorage
+
+// Utility: Get cart from storage
+function getCart() {
+  return JSON.parse(localStorage.getItem('cart') || '{}');
+}
+
+// Utility: Save cart to storage
+function saveCart(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+// Render cart items
+function renderCart() {
+  const cart = getCart();
+  const itemsDiv = document.getElementById('cart-items');
+  const summaryDiv = document.getElementById('cart-summary');
+  if (!itemsDiv || !summaryDiv) return;
+
+  let total = 0;
+  let html = '';
+  Object.entries(cart).forEach(([id, qty]) => {
+    const product = window.CATALOG.find(p => p.id === id);
+    if (!product) return;
+    total += product.price * qty;
+    html += `
+      <div class="cart-item">
+        <img src="${product.img}" alt="${product.name}" style="width:60px;border-radius:8px;">
+        <div>
+          <h4>${product.name}</h4>
+          <p>$${product.price.toFixed(2)} × ${qty}</p>
+        </div>
+        <div>
+          <button onclick="updateQty('${id}', 1)">+</button>
+          <button onclick="updateQty('${id}', -1)">-</button>
+          <button onclick="removeItem('${id}')">Remove</button>
+        </div>
+      </div>
+    `;
+  });
+  itemsDiv.innerHTML = html || '<p>Your cart is empty.</p>';
+  summaryDiv.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
+  document.getElementById('cart-count').textContent = Object.values(cart).reduce((a, b) => a + b, 0);
+}
+
+// Update quantity
+window.updateQty = function(id, delta) {
+  const cart = getCart();
+  cart[id] = (cart[id] || 0) + delta;
+  if (cart[id] <= 0) delete cart[id];
+  saveCart(cart);
+  renderCart();
+};
+
+// Remove item
+window.removeItem = function(id) {
+  const cart = getCart();
+  delete cart[id];
+  saveCart(cart);
+  renderCart();
+};
+
+// Set year in footer
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Initial render
+renderCart();

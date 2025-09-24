@@ -1,33 +1,43 @@
 # Campus Shop (Demo)
 
+A simple, interactive demo store for campus gear.  
+Features product previews, quick view modal, confetti animation, recently viewed items, coupon reveal, and theme customizer.
 
+## Quick Start
 
-## Quick start
 ```bash
-# 1) Create folders
-mkdir -p campus-shop/public/assets/js assets/img
-# 2) Put files under public/ as shown
-# 3) Open in VS Code and use Live Server (optional)
+# 1) Clone the repo and open the folder
+# 2) Open public/index.html in your browser
+# 3) (Optional) Use VS Code Live Server for local preview
 ```
-
 
 ## Structure
+
 ```
 public/
-index.html
-cart.html
-assets/
-styles.css
-js/
-products.js
-main.js
-cart.js
+  index.html
+  cart.html
+  assets/
+    styles.css
+    img/
+    js/
+      products.js
+      main.js
+      cart.js
 ```
 
+## Features
 
-## Next steps
-- Push to GitHub (init → commit → remote → push).
-- Host static site first (Netlify/Cloudflare Pages) to preview.
-- For PHP checkout (sessions, order saving, email), deploy to a PHP host (e.g., DreamHost/Hostinger/Render) and move files to a `/public` web root with `index.php`.
+- Interactive product preview (hover to cycle images)
+- Product quick view modal
+- Confetti animation on add to cart
+- Recently viewed items
+- Coupon reveal scratch card
+- Theme customizer (light/dark)
+
+## Next Steps
+
+- Push to GitHub
+- Host static site (Netlify, Cloudflare Pages, etc.)
 
 
