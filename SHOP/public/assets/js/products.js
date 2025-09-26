@@ -1,4 +1,6 @@
 // Demo product catalog (could later be fetched from the server)
+const SIZES = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+
 window.CATALOG = [
   {
     id: 'tee-classic',
@@ -6,8 +8,9 @@ window.CATALOG = [
     price: 18.00,
     img: 'assets/img/tee.jpg',
     imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
-    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
-    tag: 'Best seller'
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
+    tag: 'Best seller',
+    sizes: SIZES
   },
   {
     id: 'tee-classic',
@@ -15,8 +18,9 @@ window.CATALOG = [
     price: 18.00,
     img: 'assets/img/tee.jpg',
     imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
-    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
-    tag: 'Best seller'
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
+    tag: 'Best seller',
+    sizes: SIZES
   },
   {
     id: 'tee-classic',
@@ -24,8 +28,9 @@ window.CATALOG = [
     price: 18.00,
     img: 'assets/img/tee.jpg',
     imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
-    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
-    tag: 'Best seller'
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
+    tag: 'Best seller',
+    sizes: SIZES
   },
   {
     id: 'tee-classic',
@@ -33,8 +38,9 @@ window.CATALOG = [
     price: 18.00,
     img: 'assets/img/tee.jpg',
     imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
-    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
-    tag: 'Best seller'
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
+    tag: 'Best seller',
+    sizes: SIZES
   },
   {
     id: 'tee-classic',
@@ -42,8 +48,9 @@ window.CATALOG = [
     price: 18.00,
     img: 'assets/img/tee.jpg',
     imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
-    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
-    tag: 'Best seller'
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
+    tag: 'Best seller',
+    sizes: SIZES
   },
   {
     id: 'tee-classic',
@@ -51,8 +58,9 @@ window.CATALOG = [
     price: 18.00,
     img: 'assets/img/tee.jpg',
     imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
-    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
-    tag: 'Best seller'
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
+    tag: 'Best seller',
+    sizes: SIZES
   },
   {
     id: 'tee-classic',
@@ -60,8 +68,9 @@ window.CATALOG = [
     price: 18.00,
     img: 'assets/img/tee.jpg',
     imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
-    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
-    tag: 'Best seller'
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
+    tag: 'Best seller',
+    sizes: SIZES
   },
   {
     id: 'tee-classic',
@@ -69,8 +78,9 @@ window.CATALOG = [
     price: 18.00,
     img: 'assets/img/tee.jpg',
     imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
-    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
-    tag: 'Best seller'
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
+    tag: 'Best seller',
+    sizes: SIZES
   },
   {
     id: 'hoodie-black',

@@ -2,8 +2,8 @@
 :root {
   --bg: #f8fafc;
   --panel: #fff;
-  --text: #22223b;
-  --muted: #9ca3af;
+  --text: #1e293b;
+  --muted: #64748b;
   --brand: #6366f1;
   --brand-2: #22d3ee;
   --accent: #fbbf24;
@@ -15,6 +15,15 @@
   --panel: #f7f7f7;
   --text: #222;
   --muted: #666;
+}
+:root[data-theme='dark'] {
+  --bg: #18181b;
+  --panel: #23272a;
+  --text: #f3f4f6;
+  --muted: #94a3b8;
+  --brand: #818cf8;
+  --brand-2: #67e8f9;
+  --accent: #fde68a;
 }
 
 /* General layout */

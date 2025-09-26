@@ -70,6 +70,7 @@ function openQuickView(productId) {
   document.getElementById('quickview-description').textContent = product.desc || '';
   document.getElementById('quickview-price').textContent = `$${product.price.toFixed(2)}`;
   document.getElementById('quickview-add').dataset.id = product.id;
+
   // Render images
   const imgDiv = document.getElementById('quickview-image');
   imgDiv.innerHTML = '';
@@ -79,6 +80,16 @@ function openQuickView(productId) {
     img.alt = product.name;
     imgDiv.appendChild(img);
   });
+
+  // Render size selector
+  const sizes = product.sizes || ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+  let sizeHtml = '<label for="quickview-size">Size:</label> <select id="quickview-size">';
+  sizes.forEach(size => {
+    sizeHtml += `<option value="${size}">${size}</option>`;
+  });
+  sizeHtml += '</select>';
+  document.getElementById('quickview-size-wrap').innerHTML = sizeHtml;
+
   document.getElementById('quickview').style.display = 'flex';
 }
 
@@ -106,8 +117,11 @@ function confettiBurst(target) {
 
 // Add to cart from Quick View and show confetti
 document.getElementById('quickview-add').addEventListener('click', function () {
-  // Example: Add to cart logic (implement as needed)
-  showToast('Added to cart!');
+  const productId = this.dataset.id;
+  const size = document.getElementById('quickview-size').value;
+  // Save both productId and size to cart
+  // ...your add to cart logic...
+  showToast(`Added to cart! Size: ${size}`);
   confettiBurst(document.querySelector('#quickview .modal-content'));
 });
 
@@ -154,17 +168,17 @@ if (scratch) {
 
 // Theme Customizer
 function setTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
+  document.documentElement.setAttribute('data-theme', theme); // <html> element
   localStorage.setItem('theme', theme);
 }
+
+// Theme panel buttons
 document.getElementById('light-theme').onclick = () => setTheme('light');
 document.getElementById('dark-theme').onclick = () => setTheme('dark');
 
-// Theme toggle button (moon/sun)
-document.getElementById('theme-toggle').onclick = () => {
-  const current = document.documentElement.getAttribute('data-theme');
-  setTheme(current === 'light' ? 'dark' : 'light');
-};
+// On page load, set theme from localStorage or default to light
+const savedTheme = localStorage.getItem('theme') || 'light';
+setTheme(savedTheme);
 
 // Floating actions for modals
 document.getElementById('quickview-toggle').onclick = () => {
