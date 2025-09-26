@@ -6,11 +6,15 @@
   <meta name="description" content="Campus Shop: Rep your chapter and study in style. Simple demo store for campus gear." />
   <title>Campus Shop</title>
   <link rel="stylesheet" href="assets/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Header with navigation and theme toggle -->
   <header class="container header">
-    <h1>Campus Shop</h1>
+    <div class="logo" style="display:flex;align-items:center;gap:8px;">
+      <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#6366f1"/><text x="16" y="22" text-anchor="middle" font-size="16" fill="#fff" font-family="Inter, sans-serif" font-weight="bold">CS</text></svg>
+      <span style="font-weight:700;font-size:1.5em;">Campus Shop</span>
+    </div>
     <nav>
       <input id="search" class="search" type="search" placeholder="Search products…" aria-label="Search products">
       <button id="theme-toggle" class="btn ghost" aria-label="Toggle theme">🌓</button>
@@ -24,11 +28,45 @@
     <section class="hero">
       <h2>Rep your chapter • Study in style</h2>
       <p>Simple demo store (no real payments).</p>
+      <a href="#products" class="btn" style="margin-top:16px;">Shop Now</a>
     </section>
     <section id="products" class="grid"></section>
     <section>
       <h3>Recently Viewed</h3>
       <div id="recently-viewed" style="display:flex;gap:4px;"></div>
+    </section>
+    <section class="testimonials container">
+      <h3>What Students Say</h3>
+      <div class="testimonial-list">
+        <blockquote>
+          <p>“The quality is amazing and shipping was fast!”</p>
+          <footer>– Alex, CSUN Student</footer>
+        </blockquote>
+        <blockquote>
+          <p>“Love the chapter tee. Super comfy!”</p>
+          <footer>– Jamie, Alumni</footer>
+        </blockquote>
+      </div>
+    </section>
+    <section class="faq container">
+      <h3>Frequently Asked Questions</h3>
+      <details>
+        <summary>Is this a real store?</summary>
+        <p>No, this is a demo project for campus gear. No real payments are processed.</p>
+      </details>
+      <details>
+        <summary>How do I contact support?</summary>
+        <p>Email us at <a href="mailto:support@campusshop.com">support@campusshop.com</a>.</p>
+      </details>
+    </section>
+    <section class="contact container">
+      <h3>Contact Us</h3>
+      <form action="mailto:support@campusshop.com" method="POST" enctype="text/plain">
+        <input type="text" name="name" placeholder="Your Name" required style="margin-bottom:8px;">
+        <input type="email" name="email" placeholder="Your Email" required style="margin-bottom:8px;">
+        <textarea name="message" placeholder="Your Message" required style="margin-bottom:8px;"></textarea>
+        <button type="submit" class="btn">Send Message</button>
+      </form>
     </section>
   </main>
 

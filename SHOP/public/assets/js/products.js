@@ -10,6 +10,69 @@ window.CATALOG = [
     tag: 'Best seller'
   },
   {
+    id: 'tee-classic',
+    name: 'Classic Chapter Tee',
+    price: 18.00,
+    img: 'assets/img/tee.jpg',
+    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
+    tag: 'Best seller'
+  },
+  {
+    id: 'tee-classic',
+    name: 'Classic Chapter Tee',
+    price: 18.00,
+    img: 'assets/img/tee.jpg',
+    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
+    tag: 'Best seller'
+  },
+  {
+    id: 'tee-classic',
+    name: 'Classic Chapter Tee',
+    price: 18.00,
+    img: 'assets/img/tee.jpg',
+    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
+    tag: 'Best seller'
+  },
+  {
+    id: 'tee-classic',
+    name: 'Classic Chapter Tee',
+    price: 18.00,
+    img: 'assets/img/tee.jpg',
+    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
+    tag: 'Best seller'
+  },
+  {
+    id: 'tee-classic',
+    name: 'Classic Chapter Tee',
+    price: 18.00,
+    img: 'assets/img/tee.jpg',
+    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
+    tag: 'Best seller'
+  },
+  {
+    id: 'tee-classic',
+    name: 'Classic Chapter Tee',
+    price: 18.00,
+    img: 'assets/img/tee.jpg',
+    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
+    tag: 'Best seller'
+  },
+  {
+    id: 'tee-classic',
+    name: 'Classic Chapter Tee',
+    price: 18.00,
+    img: 'assets/img/tee.jpg',
+    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXL.',
+    tag: 'Best seller'
+  },
+  {
     id: 'hoodie-black',
     name: 'Black Hoodie',
     price: 39.00,
