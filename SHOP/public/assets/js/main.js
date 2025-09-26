@@ -199,3 +199,52 @@ document.getElementById('year').textContent = new Date().getFullYear();
 // Initial render
 renderProducts();
 renderRecentlyViewed();
+
+// Rotating testimonials data
+const testimonials = [
+  {
+    text: "The quality is amazing and shipping was fast!",
+    author: "Alex, CSUN Student"
+  },
+  {
+    text: "Love the chapter tee. Super comfy!",
+    author: "Jamie, CSUN Alumni"
+  },
+  {
+    text: "The football hoodie is perfect for game day!",
+    author: "Taylor, Ohio State University"
+  },
+  {
+    text: "Great fit and awesome colors. Go Blue!",
+    author: "Jordan, University of Michigan"
+  },
+  {
+    text: "Best campus merch I’ve bought. Roll Tide!",
+    author: "Casey, University of Alabama"
+  }
+];
+
+let currentTestimonial = 0;
+const carousel = document.getElementById('testimonial-carousel');
+
+function showTestimonial(index) {
+  const oldSlide = carousel.querySelector('.testimonial-slide.active');
+  if (oldSlide) {
+    oldSlide.classList.remove('active');
+    oldSlide.classList.add('exit-left');
+    setTimeout(() => oldSlide.remove(), 500);
+  }
+  const testimonial = testimonials[index];
+  const slide = document.createElement('blockquote');
+  slide.className = 'testimonial-slide active';
+  slide.innerHTML = `<p>“${testimonial.text}”</p><footer>– ${testimonial.author}</footer>`;
+  carousel.appendChild(slide);
+}
+
+if (carousel) {
+  showTestimonial(currentTestimonial);
+  setInterval(() => {
+    currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+    showTestimonial(currentTestimonial);
+  }, 4000);
+}

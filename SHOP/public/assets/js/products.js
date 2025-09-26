@@ -6,9 +6,9 @@ window.CATALOG = [
     id: 'tee-classic',
     name: 'Classic Chapter Tee',
     price: 18.00,
-    img: 'assets/img/tee.jpg',
-    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
-    desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
+    img: 'assets/img/alabama_hoodie.webp',
+    imgs: ['assets/img/alabama_hoodie.webp', 'assets/img/alabama_hoodie.webp'],
+    desc: 'Soft cotton hoodie with chapter logo. Unisex sizing S–XXXL.',
     tag: 'Best seller',
     sizes: SIZES
   },
