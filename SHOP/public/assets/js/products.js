@@ -3,9 +3,9 @@ const SIZES = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 
 window.CATALOG = [
   {
-    id: 'tee-classic',
-    name: 'Classic Chapter Tee',
-    price: 18.00,
+    id: 'Classic-alabama-hoodie',
+    name: 'Classic Alabama Hoodie',
+    price: 39.00,
     img: 'assets/img/alabama_hoodie.webp',
     imgs: ['assets/img/alabama_hoodie.webp', 'assets/img/alabama_hoodie.webp'],
     desc: 'Soft cotton hoodie with chapter logo. Unisex sizing S–XXXL.',
@@ -17,7 +17,7 @@ window.CATALOG = [
     name: 'Classic Chapter Tee',
     price: 18.00,
     img: 'assets/img/tee.jpg',
-    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    imgs: ['assets/img/tee.jpg'],
     desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
     tag: 'Best seller',
     sizes: SIZES
@@ -27,7 +27,7 @@ window.CATALOG = [
     name: 'Classic Chapter Tee',
     price: 18.00,
     img: 'assets/img/tee.jpg',
-    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    imgs: ['assets/img/tee.jpg'],
     desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
     tag: 'Best seller',
     sizes: SIZES
@@ -37,7 +37,7 @@ window.CATALOG = [
     name: 'Classic Chapter Tee',
     price: 18.00,
     img: 'assets/img/tee.jpg',
-    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    imgs: ['assets/img/tee.jpg'],
     desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
     tag: 'Best seller',
     sizes: SIZES
@@ -47,7 +47,7 @@ window.CATALOG = [
     name: 'Classic Chapter Tee',
     price: 18.00,
     img: 'assets/img/tee.jpg',
-    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    imgs: ['assets/img/tee.jpg'],
     desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
     tag: 'Best seller',
     sizes: SIZES
@@ -57,7 +57,7 @@ window.CATALOG = [
     name: 'Classic Chapter Tee',
     price: 18.00,
     img: 'assets/img/tee.jpg',
-    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    imgs: ['assets/img/tee.jpg'],
     desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
     tag: 'Best seller',
     sizes: SIZES
@@ -67,7 +67,7 @@ window.CATALOG = [
     name: 'Classic Chapter Tee',
     price: 18.00,
     img: 'assets/img/tee.jpg',
-    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    imgs: ['assets/img/tee.jpg'],
     desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
     tag: 'Best seller',
     sizes: SIZES
@@ -77,7 +77,7 @@ window.CATALOG = [
     name: 'Classic Chapter Tee',
     price: 18.00,
     img: 'assets/img/tee.jpg',
-    imgs: ['assets/img/tee_front.jpg', 'assets/img/tee_back.jpg'],
+    imgs: ['assets/img/tee.jpg'],
     desc: 'Soft cotton tee with chapter logo. Unisex sizing S–XXXL.',
     tag: 'Best seller',
     sizes: SIZES

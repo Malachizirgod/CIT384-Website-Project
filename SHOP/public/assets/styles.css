@@ -238,3 +238,27 @@ blockquote footer {
   margin-top: 8px;
   font-style: normal;
 }
+
+/* Add to styles.css if not present */
+a, button, input, textarea, select {
+  font-family: inherit;
+  font-size: 1em;
+}
+
+input, textarea, select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--muted);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid var(--brand);
+  border-color: var(--brand);
+}
+
+::-webkit-input-placeholder { color: var(--muted); }
+::-moz-placeholder { color: var(--muted); }
+:-ms-input-placeholder { color: var(--muted); }
+::placeholder { color: var(--muted); }

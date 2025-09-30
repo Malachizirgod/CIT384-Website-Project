@@ -9,7 +9,7 @@ function setCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); updateCa
 function updateCartCount(){ const c = getCart(); const t = Object.values(c).reduce((s,i)=>s+i.qty,0); $('#cart-count').textContent = t; }
 function money(n){ return `$${n.toFixed(2)}`; }
 
-function setTheme(t){ document.documentElement.setAttribute('data-theme', t); localStorage.setItem(THEME_KEY, t); $('#theme-toggle').textContent = t === 'light' ? '🌞' : '🌙'; }
+function setTheme(t){ document.documentElement.setAttribute('data-theme', t); localStorage.setItem(THEME_KEY, t); }
 function toggleTheme(){ const cur = localStorage.getItem(THEME_KEY) || 'dark'; setTheme(cur === 'dark' ? 'light' : 'dark'); }
 
 function toast(msg){
@@ -24,7 +24,7 @@ function renderProducts() {
   const grid = document.getElementById('products');
   grid.innerHTML = window.CATALOG.map(product => `
     <div class="product-card" data-id="${product.id}">
-      <img src="${product.img}" alt="${product.name}" />
+      <img src="${product.img}" alt="${product.name} product image" />
       <h3>${product.name}</h3>
       <p>${product.desc || ''}</p>
       <p>$${product.price.toFixed(2)}</p>
@@ -83,7 +83,7 @@ function openQuickView(productId) {
 
   // Render size selector
   const sizes = product.sizes || ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
-  let sizeHtml = '<label for="quickview-size">Size:</label> <select id="quickview-size">';
+  let sizeHtml = '<label for="quickview-size">Size:</label> <select id="quickview-size" aria-label="Select size">';
   sizes.forEach(size => {
     sizeHtml += `<option value="${size}">${size}</option>`;
   });
@@ -119,8 +119,7 @@ function confettiBurst(target) {
 document.getElementById('quickview-add').addEventListener('click', function () {
   const productId = this.dataset.id;
   const size = document.getElementById('quickview-size').value;
-  // Save both productId and size to cart
-  // ...your add to cart logic...
+  // Save productId and size to cart (update cart.js as well)
   showToast(`Added to cart! Size: ${size}`);
   confettiBurst(document.querySelector('#quickview .modal-content'));
 });
@@ -168,15 +167,11 @@ if (scratch) {
 
 // Theme Customizer
 function setTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme); // <html> element
+  document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
 }
-
-// Theme panel buttons
 document.getElementById('light-theme').onclick = () => setTheme('light');
 document.getElementById('dark-theme').onclick = () => setTheme('dark');
-
-// On page load, set theme from localStorage or default to light
 const savedTheme = localStorage.getItem('theme') || 'light';
 setTheme(savedTheme);
 

@@ -71,17 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Simple cart implementation using localStorage
 
-// Utility: Get cart from storage
+// Cart structure: { [productId_size]: quantity }
 function getCart() {
   return JSON.parse(localStorage.getItem('cart') || '{}');
 }
-
-// Utility: Save cart to storage
 function saveCart(cart) {
   localStorage.setItem('cart', JSON.stringify(cart));
 }
-
-// Render cart items
 function renderCart() {
   const cart = getCart();
   const itemsDiv = document.getElementById('cart-items');
@@ -90,21 +86,23 @@ function renderCart() {
 
   let total = 0;
   let html = '';
-  Object.entries(cart).forEach(([id, qty]) => {
+  Object.entries(cart).forEach(([key, qty]) => {
+    const [id, size] = key.split('_');
     const product = window.CATALOG.find(p => p.id === id);
     if (!product) return;
     total += product.price * qty;
     html += `
       <div class="cart-item">
-        <img src="${product.img}" alt="${product.name}" style="width:60px;border-radius:8px;">
+        <img src="${product.img}" alt="${product.name} product image" style="width:60px;border-radius:8px;">
         <div>
           <h4>${product.name}</h4>
+          <p>Size: ${size}</p>
           <p>$${product.price.toFixed(2)} × ${qty}</p>
         </div>
         <div>
-          <button onclick="updateQty('${id}', 1)">+</button>
-          <button onclick="updateQty('${id}', -1)">-</button>
-          <button onclick="removeItem('${id}')">Remove</button>
+          <button aria-label="Increase quantity" onclick="updateQty('${id}_${size}', 1)">+</button>
+          <button aria-label="Decrease quantity" onclick="updateQty('${id}_${size}', -1)">-</button>
+          <button aria-label="Remove item" onclick="removeItem('${id}_${size}')">Remove</button>
         </div>
       </div>
     `;
@@ -113,26 +111,30 @@ function renderCart() {
   summaryDiv.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
   document.getElementById('cart-count').textContent = Object.values(cart).reduce((a, b) => a + b, 0);
 }
-
-// Update quantity
-window.updateQty = function(id, delta) {
+window.updateQty = function(key, delta) {
   const cart = getCart();
-  cart[id] = (cart[id] || 0) + delta;
-  if (cart[id] <= 0) delete cart[id];
+  cart[key] = (cart[key] || 0) + delta;
+  if (cart[key] <= 0) delete cart[key];
   saveCart(cart);
   renderCart();
 };
-
-// Remove item
-window.removeItem = function(id) {
+window.removeItem = function(key) {
   const cart = getCart();
-  delete cart[id];
+  delete cart[key];
   saveCart(cart);
   renderCart();
 };
-
-// Set year in footer
 document.getElementById('year').textContent = new Date().getFullYear();
-
-// Initial render
 renderCart();
+
+document.getElementById('quickview-add').addEventListener('click', function () {
+  const productId = this.dataset.id;
+  const size = document.getElementById('quickview-size').value;
+  const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+  const key = `${productId}_${size}`;
+  cart[key] = (cart[key] || 0) + 1;
+  localStorage.setItem('cart', JSON.stringify(cart));
+  document.getElementById('cart-count').textContent = Object.values(cart).reduce((a, b) => a + b, 0);
+  showToast(`Added to cart! Size: ${size}`);
+  confettiBurst(document.querySelector('#quickview .modal-content'));
+});
