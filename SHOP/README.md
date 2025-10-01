@@ -1,7 +1,7 @@
-# Campus Shop (Demo)
+# Campus Shop
 
 A modern, accessible demo store for campus gear.  
-Features product previews, quick view modal, confetti animation, recently viewed items, coupon reveal, and theme customizer.
+Features product pages, slide-out cart, dark/light mode, recommendations, and more.
 
 ## Quick Start
 
@@ -9,36 +9,22 @@ Features product previews, quick view modal, confetti animation, recently viewed
 2. Open `public/index.html` in your browser.
 3. (Optional) Use VS Code Live Server for local preview.
 
-## Structure
-
-```
-public/
-  index.html
-  cart.html
-  assets/
-    styles.css
-    img/
-    js/
-      products.js
-      main.js
-      cart.js
-```
-
 ## Features
 
-- Interactive product preview (hover to cycle images)
-- Product quick view modal
-- Confetti animation on add to cart
-- Recently viewed items
-- Coupon reveal scratch card
-- Theme customizer (light/dark)
+- Dedicated product pages with options and recommendations
+- Slide-out cart drawer with smooth transitions
+- Animated dark/light mode toggle
+- Muted, accessible color palette
+- Responsive, mobile-first layout
 - Accessible navigation and controls
+- Micro-interactions and feedback
 
 ## Accessibility
 
-- All images have descriptive `alt` text.
-- Keyboard navigation and visible focus styles.
-- Sufficient color contrast for all themes.
+- All images have descriptive `alt` text
+- Keyboard navigation and visible focus styles
+- Sufficient color contrast for all themes
+- ARIA labels and visually hidden text for icons
 
 ## Contributing
 

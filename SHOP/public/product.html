@@ -4,26 +4,37 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Product Details - Campus Shop</title>
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-  <header class="container header">
-    <div class="logo">
+  <header class="container header" role="banner">
+    <div class="logo" style="display:flex;align-items:center;gap:8px;">
+      <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#38bdf8"/><text x="16" y="22" text-anchor="middle" font-size="16" fill="#fff" font-family="Inter, sans-serif" font-weight="bold">CS</text></svg>
       <span style="font-weight:700;font-size:1.5em;">Campus Shop</span>
     </div>
     <nav>
       <a href="index.html">Store</a>
       <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
-      <button id="theme-toggle" class="btn ghost" aria-label="Toggle theme">🌓</button>
+      <button id="theme-toggle" class="btn ghost theme-toggle" aria-label="Toggle dark/light mode">
+        <span class="theme-icon" aria-hidden="true">🌙</span>
+        <span class="visually-hidden">Toggle theme</span>
+      </button>
+      <button class="nav-toggle" aria-label="Open navigation">☰</button>
     </nav>
   </header>
-  <main class="container">
-    <div id="product-details"></div>
-    <a href="index.html" class="btn" style="margin-top:24px;">Back to Store</a>
+  <main class="container" id="main-content">
+    <nav aria-label="Breadcrumb">
+      <a href="index.html" class="breadcrumb-link">← Back to Shop</a>
+    </nav>
+    <div id="product-details" class="product-detail-grid"></div>
+    <section id="recommendations" aria-label="You may also like"></section>
   </main>
-  <footer class="container footer">
+  <footer class="container footer" role="contentinfo">
     <p>© <span id="year"></span> Campus Shop</p>
   </footer>
+  <div id="toast-wrap" aria-live="polite" aria-atomic="true"></div>
   <script src="assets/js/products.js"></script>
   <script src="assets/js/main.js"></script>
   <script>
@@ -34,30 +45,65 @@
     const details = document.getElementById('product-details');
     if (product) {
       details.innerHTML = `
-        <div class="product-detail-card">
-          <img src="${product.img}" alt="${product.name}" style="max-width:320px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06);margin-bottom:24px;">
-          <h2>${product.name}</h2>
-          <p>${product.desc || ''}</p>
-          <p style="font-size:1.2em;font-weight:600;">$${product.price.toFixed(2)}</p>
-          <label for="product-size">Size:</label>
-          <select id="product-size">
-            ${(product.sizes || ['S','M','L','XL','XXL','XXXL']).map(s=>`<option value="${s}">${s}</option>`).join('')}
-          </select>
-          <button id="add-to-cart" class="btn" style="margin-left:16px;">Add to Cart</button>
+        <div class="product-images">
+          ${(product.imgs || [product.img]).map(src => `<img src="${src}" alt="${product.name}" class="detail-img" />`).join('')}
+        </div>
+        <div class="product-info">
+          <h1>${product.name}</h1>
+          <p class="product-desc">${product.desc || ''}</p>
+          <div class="options">
+            <label for="product-size">Size:</label>
+            <select id="product-size">${(product.sizes||['S','M','L','XL','XXL','XXXL']).map(s=>`<option value="${s}">${s}</option>`).join('')}</select>
+          </div>
+          <div class="options">
+            <label for="product-color">Color:</label>
+            <select id="product-color">${(product.colors||['Default']).map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
+          </div>
+          <div class="cta-row">
+            <button id="add-to-cart" class="btn large-cta" aria-label="Add ${product.name} to cart">Add to Cart</button>
+            <button id="share-btn" class="btn ghost" aria-label="Share product">🔗<span class="visually-hidden">Share</span></button>
+          </div>
+          <div id="add-feedback"></div>
         </div>
       `;
       document.getElementById('add-to-cart').onclick = function() {
         const size = document.getElementById('product-size').value;
+        const color = document.getElementById('product-color').value;
         const cart = JSON.parse(localStorage.getItem('cart') || '{}');
-        const key = `${product.id}_${size}`;
+        const key = `${product.id}_${size}_${color}`;
         cart[key] = (cart[key] || 0) + 1;
         localStorage.setItem('cart', JSON.stringify(cart));
         document.getElementById('cart-count').textContent = Object.values(cart).reduce((a, b) => a + b, 0);
-        if (window.showToast) showToast(`Added to cart! Size: ${size}`);
+        showAddFeedback();
+      };
+      function showAddFeedback() {
+        const feedback = document.getElementById('add-feedback');
+        feedback.innerHTML = `<span class="icon-check">✔️</span> Added to cart!`;
+        feedback.classList.add('show');
+        setTimeout(()=>feedback.classList.remove('show'), 1500);
+      }
+      document.getElementById('share-btn').onclick = () => {
+        navigator.clipboard.writeText(window.location.href);
+        alert('Product link copied!');
       };
     } else {
       details.innerHTML = '<p>Product not found.</p>';
     }
+    // Recommendations
+    const recs = window.CATALOG.filter(p => p.id !== productId).slice(0,3);
+    document.getElementById('recommendations').innerHTML = `
+      <h2>You may also like</h2>
+      <div class="grid">
+        ${recs.map(p=>`
+          <div class="product-card">
+            <a href="product.html?id=${p.id}" aria-label="View details for ${p.name}">
+              <img src="${p.img}" alt="${p.name}" />
+              <h3>${p.name}</h3>
+            </a>
+          </div>
+        `).join('')}
+      </div>
+    `;
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>

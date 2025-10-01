@@ -4,26 +4,36 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cart - Campus Shop</title>
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="container header">
-    <h1>Campus Shop</h1>
+  <header class="container header" role="banner">
+    <div class="logo" style="display:flex;align-items:center;gap:8px;">
+      <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#38bdf8"/><text x="16" y="22" text-anchor="middle" font-size="16" fill="#fff" font-family="Inter, sans-serif" font-weight="bold">CS</text></svg>
+      <span style="font-weight:700;font-size:1.5em;">Campus Shop</span>
+    </div>
     <nav>
       <a href="index.html">Store</a>
-      <a href="cart.html" class="active">Cart (<span id="cart-count">0</span>)</a>
+      <a href="cart.html" class="active" aria-current="page">Cart (<span id="cart-count">0</span>)</a>
+      <button id="theme-toggle" class="btn ghost theme-toggle" aria-label="Toggle dark/light mode">
+        <span class="theme-icon" aria-hidden="true">🌙</span>
+        <span class="visually-hidden">Toggle theme</span>
+      </button>
+      <button class="nav-toggle" aria-label="Open navigation">☰</button>
     </nav>
   </header>
-  <main class="container">
-    <h2>Your Cart</h2>
+  <main class="container" id="main-content">
+    <h1>Your Cart</h1>
     <div id="cart-items"></div>
     <div id="cart-summary"></div>
-    <a href="index.html" class="btn">Continue Shopping</a>
+    <a href="index.html" class="btn" style="margin-top:24px;">Continue Shopping</a>
   </main>
-  <footer class="container footer">
+  <footer class="container footer" role="contentinfo">
     <p>© <span id="year"></span> Campus Shop</p>
   </footer>
+  <div id="toast-wrap" aria-live="polite" aria-atomic="true"></div>
   <script src="assets/js/products.js"></script>
   <script src="assets/js/cart.js"></script>
 </body>

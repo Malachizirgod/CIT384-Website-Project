@@ -3,44 +3,41 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Campus Shop: Rep your chapter and study in style. Simple demo store for campus gear." />
+  <meta name="description" content="Campus Shop: Rep your chapter and study in style. Modern demo store for campus gear." />
   <title>Campus Shop</title>
+  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Header with navigation and theme toggle -->
-  <header class="container header">
+  <header class="container header" role="banner">
     <div class="logo" style="display:flex;align-items:center;gap:8px;">
-      <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#6366f1"/><text x="16" y="22" text-anchor="middle" font-size="16" fill="#fff" font-family="Inter, sans-serif" font-weight="bold">CS</text></svg>
+      <svg width="32" height="32" fill="none" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#38bdf8"/><text x="16" y="22" text-anchor="middle" font-size="16" fill="#fff" font-family="Inter, sans-serif" font-weight="bold">CS</text></svg>
       <span style="font-weight:700;font-size:1.5em;">Campus Shop</span>
     </div>
     <nav>
-      <input id="search" class="search" type="search" placeholder="Search products…" aria-label="Search products">
-      <a href="index.html" class="active">Store</a>
+      <a href="index.html" class="active" aria-current="page">Store</a>
       <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
-      <button id="theme-toggle" class="btn ghost" aria-label="Toggle theme">🌓</button>
+      <button id="theme-toggle" class="btn ghost theme-toggle" aria-label="Toggle dark/light mode">
+        <span class="theme-icon" aria-hidden="true">🌙</span>
+        <span class="visually-hidden">Toggle theme</span>
+      </button>
+      <button class="nav-toggle" aria-label="Open navigation">☰</button>
     </nav>
   </header>
 
-  <!-- Main content: hero, products, recently viewed -->
-  <main class="container">
+  <main class="container" id="main-content">
     <section class="hero">
-      <h2>Rep your chapter • Study in style</h2>
-      <p>Simple demo store (no real payments).</p>
-      <a href="#products" class="btn" style="margin-top:16px;">Shop Now</a>
+      <h1>Rep your chapter • Study in style</h1>
+      <p>Modern campus gear, accessible to all. <a href="#products" class="btn large-cta" style="margin-top:16px;">Shop Now</a></p>
     </section>
-    <section id="products" class="grid"></section>
-    <section>
-      <h3>Recently Viewed</h3>
-      <div id="recently-viewed" style="display:flex;gap:4px;"></div>
-    </section>
+    <section id="products" class="grid" aria-label="Product list"></section>
     <section class="testimonials container">
-      <h3>What Students Say</h3>
+      <h2>What Students Say</h2>
       <div id="testimonial-carousel" class="testimonial-carousel"></div>
     </section>
     <section class="faq container">
-      <h3>Frequently Asked Questions</h3>
+      <h2>Frequently Asked Questions</h2>
       <details>
         <summary>Is this a real store?</summary>
         <p>No, this is a demo project for campus gear. No real payments are processed.</p>
@@ -51,64 +48,33 @@
       </details>
     </section>
     <section class="contact container">
-      <h3>Contact Us</h3>
+      <h2>Contact Us</h2>
       <form action="mailto:support@campusshop.com" method="POST" enctype="text/plain">
-        <input type="text" name="name" placeholder="Your Name" required style="margin-bottom:8px;">
-        <input type="email" name="email" placeholder="Your Email" required style="margin-bottom:8px;">
-        <textarea name="message" placeholder="Your Message" required style="margin-bottom:8px;"></textarea>
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
         <button type="submit" class="btn">Send Message</button>
       </form>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="container footer">
+  <footer class="container footer" role="contentinfo">
     <p>© <span id="year"></span> Campus Shop</p>
   </footer>
 
+  <!-- Slide-out Cart Drawer -->
+  <div id="cart-drawer" class="cart-drawer" aria-label="Shopping cart" tabindex="-1">
+    <button class="close-cart" aria-label="Close cart">×</button>
+    <div id="cart-items"></div>
+    <div id="cart-summary"></div>
+  </div>
+  <button id="cart-icon" class="cart-icon" aria-label="Open cart">🛒<span id="cart-count-drawer">0</span></button>
+
   <!-- Toast notifications -->
   <div id="toast-wrap" aria-live="polite" aria-atomic="true"></div>
+  <!-- Back to top button -->
+  <button id="back-to-top" class="btn ghost" aria-label="Back to top">↑</button>
 
-  <!-- Theme panel -->
-  <div id="theme-panel">
-    <button id="light-theme" class="btn" aria-label="Light theme">☀️</button>
-    <button id="dark-theme" class="btn" aria-label="Dark theme">🌙</button>
-  </div>
-
-  <!-- Quick View Modal -->
-  <div id="quickview" class="modal">
-    <div class="modal-content">
-      <span class="close" aria-label="Close modal">&times;</span>
-      <h2>Product Details</h2>
-      <div id="quickview-image"></div>
-      <div id="quickview-info">
-        <h3 id="quickview-title"></h3>
-        <p id="quickview-description"></p>
-        <p id="quickview-price"></p>
-        <div id="quickview-size-wrap" style="margin: 12px 0;"></div>
-        <button id="quickview-add" class="btn">Add to Cart</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Coupon Scratch-Card Modal -->
-  <div id="coupon-modal" class="modal coupon">
-    <div class="modal-content">
-      <span class="close" aria-label="Close modal">&times;</span>
-      <h2>Scratch to Reveal Coupon</h2>
-      <div id="coupon-scratch" class="scratch-card">
-        <p>Scratch here to reveal your coupon code!</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Floating Actions -->
-  <div id="floating-actions">
-    <button id="quickview-toggle" class="btn" aria-label="Quick view">👁️</button>
-    <button id="coupon-toggle" class="btn" aria-label="Reveal coupon">🎟️</button>
-  </div>
-
-  <!-- Scripts -->
   <script src="assets/js/products.js"></script>
   <script src="assets/js/main.js"></script>
 </body>

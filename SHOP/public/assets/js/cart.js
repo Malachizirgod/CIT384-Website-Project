@@ -84,11 +84,10 @@ function renderCart() {
   const itemsDiv = document.getElementById('cart-items');
   const summaryDiv = document.getElementById('cart-summary');
   if (!itemsDiv || !summaryDiv) return;
-
   let total = 0;
   let html = '';
   Object.entries(cart).forEach(([key, qty]) => {
-    const [id, size] = key.split('_');
+    const [id, size, color] = key.split('_');
     const product = window.CATALOG.find(p => p.id === id);
     if (!product) return;
     total += product.price * qty;
@@ -98,19 +97,20 @@ function renderCart() {
         <div>
           <h4>${product.name}</h4>
           <p>Size: ${size}</p>
+          <p>Color: ${color}</p>
           <p>$${product.price.toFixed(2)} × ${qty}</p>
         </div>
         <div>
-          <button aria-label="Increase quantity" onclick="updateQty('${id}_${size}', 1)">+</button>
-          <button aria-label="Decrease quantity" onclick="updateQty('${id}_${size}', -1)">-</button>
-          <button aria-label="Remove item" onclick="removeItem('${id}_${size}')">Remove</button>
+          <button aria-label="Increase quantity" onclick="updateQty('${id}_${size}_${color}', 1)">+</button>
+          <button aria-label="Decrease quantity" onclick="updateQty('${id}_${size}_${color}', -1)">-</button>
+          <button aria-label="Remove item" onclick="removeItem('${id}_${size}_${color}')">Remove</button>
         </div>
       </div>
     `;
   });
-  itemsDiv.innerHTML = html || '<p>Your cart is empty.</p>';
+  itemsDiv.innerHTML = html || `<div style="text-align:center;padding:32px;"><span style="font-size:2em;">🛒</span><p>Your cart is empty.</p></div>`;
   summaryDiv.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
-  document.getElementById('cart-count').textContent = Object.values(cart).reduce((a, b) => a + b, 0);
+  updateCartCount();
 }
 window.updateQty = function(key, delta) {
   const cart = getCart();
@@ -123,7 +123,14 @@ window.removeItem = function(key) {
   delete cart[key];
   setCart(cart);
 };
-document.getElementById('year').textContent = new Date().getFullYear();
+function updateCartCount() {
+  const cart = getCart();
+  const count = Object.values(cart).reduce((a, b) => a + b, 0);
+  const el1 = document.getElementById('cart-count');
+  if (el1) el1.textContent = count;
+}
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 renderCart();
 
 document.getElementById('quickview-add').addEventListener('click', function () {
