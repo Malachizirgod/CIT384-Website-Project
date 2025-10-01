@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product Details - Campus Shop</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="container header">
+    <div class="logo">
+      <span style="font-weight:700;font-size:1.5em;">Campus Shop</span>
+    </div>
+    <nav>
+      <a href="index.html">Store</a>
+      <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+      <button id="theme-toggle" class="btn ghost" aria-label="Toggle theme">🌓</button>
+    </nav>
+  </header>
+  <main class="container">
+    <div id="product-details"></div>
+    <a href="index.html" class="btn" style="margin-top:24px;">Back to Store</a>
+  </main>
+  <footer class="container footer">
+    <p>© <span id="year"></span> Campus Shop</p>
+  </footer>
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Product page logic
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get('id');
+    const product = window.CATALOG.find(p => p.id === productId);
+    const details = document.getElementById('product-details');
+    if (product) {
+      details.innerHTML = `
+        <div class="product-detail-card">
+          <img src="${product.img}" alt="${product.name}" style="max-width:320px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.06);margin-bottom:24px;">
+          <h2>${product.name}</h2>
+          <p>${product.desc || ''}</p>
+          <p style="font-size:1.2em;font-weight:600;">$${product.price.toFixed(2)}</p>
+          <label for="product-size">Size:</label>
+          <select id="product-size">
+            ${(product.sizes || ['S','M','L','XL','XXL','XXXL']).map(s=>`<option value="${s}">${s}</option>`).join('')}
+          </select>
+          <button id="add-to-cart" class="btn" style="margin-left:16px;">Add to Cart</button>
+        </div>
+      `;
+      document.getElementById('add-to-cart').onclick = function() {
+        const size = document.getElementById('product-size').value;
+        const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+        const key = `${product.id}_${size}`;
+        cart[key] = (cart[key] || 0) + 1;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById('cart-count').textContent = Object.values(cart).reduce((a, b) => a + b, 0);
+        if (window.showToast) showToast(`Added to cart! Size: ${size}`);
+      };
+    } else {
+      details.innerHTML = '<p>Product not found.</p>';
+    }
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

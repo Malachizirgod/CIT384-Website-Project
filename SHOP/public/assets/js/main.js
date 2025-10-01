@@ -24,10 +24,12 @@ function renderProducts() {
   const grid = document.getElementById('products');
   grid.innerHTML = window.CATALOG.map(product => `
     <div class="product-card" data-id="${product.id}">
-      <img src="${product.img}" alt="${product.name} product image" />
-      <h3>${product.name}</h3>
-      <p>${product.desc || ''}</p>
-      <p>$${product.price.toFixed(2)}</p>
+      <a href="product.html?id=${product.id}" style="text-decoration:none;color:inherit;">
+        <img src="${product.img}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>${product.desc || ''}</p>
+        <p>$${product.price.toFixed(2)}</p>
+      </a>
       <button class="btn add-to-cart" data-id="${product.id}">Add to Cart</button>
     </div>
   `).join('');
@@ -166,12 +168,18 @@ if (scratch) {
 }
 
 // Theme Customizer
+const themeToggle = document.getElementById('theme-toggle');
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
+  if (themeToggle) themeToggle.textContent = theme === 'dark' ? '🌙' : '🌞';
 }
-document.getElementById('light-theme').onclick = () => setTheme('light');
-document.getElementById('dark-theme').onclick = () => setTheme('dark');
+if (themeToggle) {
+  themeToggle.onclick = () => {
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    setTheme(current === 'light' ? 'dark' : 'light');
+  };
+}
 const savedTheme = localStorage.getItem('theme') || 'light';
 setTheme(savedTheme);
 
@@ -243,3 +251,5 @@ if (carousel) {
     showTestimonial(currentTestimonial);
   }, 4000);
 }
+
+document.getElementById('cart-count').textContent = Object.values(getCart()).reduce((a, b) => a + b, 0);

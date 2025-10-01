@@ -75,8 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function getCart() {
   return JSON.parse(localStorage.getItem('cart') || '{}');
 }
-function saveCart(cart) {
+function setCart(cart) {
   localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart();
 }
 function renderCart() {
   const cart = getCart();
@@ -93,7 +94,7 @@ function renderCart() {
     total += product.price * qty;
     html += `
       <div class="cart-item">
-        <img src="${product.img}" alt="${product.name} product image" style="width:60px;border-radius:8px;">
+        <img src="${product.img}" alt="${product.name}" style="width:60px;border-radius:8px;">
         <div>
           <h4>${product.name}</h4>
           <p>Size: ${size}</p>
@@ -115,14 +116,12 @@ window.updateQty = function(key, delta) {
   const cart = getCart();
   cart[key] = (cart[key] || 0) + delta;
   if (cart[key] <= 0) delete cart[key];
-  saveCart(cart);
-  renderCart();
+  setCart(cart);
 };
 window.removeItem = function(key) {
   const cart = getCart();
   delete cart[key];
-  saveCart(cart);
-  renderCart();
+  setCart(cart);
 };
 document.getElementById('year').textContent = new Date().getFullYear();
 renderCart();
