@@ -1,3 +1,9 @@
+/* Center product name and price */
+.product-card h3, .product-card .price {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
 /* Theme variables */
 :root {
   --bg: #F8F5F2;

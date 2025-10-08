@@ -34,7 +34,19 @@ const themeToggle = $('#theme-toggle');
 function setTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem(THEME_KEY, theme);
-  if (themeToggle) themeToggle.querySelector('.theme-icon').textContent = theme === 'dark' ? '🌙' : '☀️';
+  if (themeToggle) {
+    const darkIcon = themeToggle.querySelector('img[alt="Dark Theme"]');
+    const lightIcon = themeToggle.querySelector('img[alt="Light Theme"]');
+    if (darkIcon && lightIcon) {
+      if (theme === 'dark') {
+        darkIcon.style.display = '';
+        lightIcon.style.display = 'none';
+      } else {
+        darkIcon.style.display = 'none';
+        lightIcon.style.display = '';
+      }
+    }
+  }
 }
 if (themeToggle) {
   themeToggle.onclick = () => {

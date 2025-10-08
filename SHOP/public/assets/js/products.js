@@ -4,200 +4,203 @@ const COLORS = ['Default', 'Black', 'White', 'Navy', 'Red'];
 
 window.CATALOG = [
   {
-    id: 'tee-classic',
-  name: 'Creighton Tee',
+    id: 'tee-arizona',
+    name: 'Arizona Tee',
     price: 18.00,
-  img: 'assets/img/creighton tee.webp',
-  imgs: ['assets/img/creighton tee.webp'],
+    img: 'assets/img/arizona tee.webp',
+    imgs: ['assets/img/arizona tee.webp'],
+    tag: 'New',
+    sizes: SIZES,
+    colors: COLORS
+  },
+  {
+    id: 'tee-arkansas',
+    name: 'Arkansas Tee',
+    price: 18.00,
+    img: 'assets/img/arkansas tee.webp',
+    imgs: ['assets/img/arkansas tee.webp'],
+    tag: 'New',
+    sizes: SIZES,
+    colors: COLORS
+  },
+  {
+    id: 'tee-creighton',
+    name: 'Creighton Tee',
+    price: 18.00,
+    img: 'assets/img/creighton tee.webp',
+    imgs: ['assets/img/creighton tee.webp'],
     tag: 'Best seller',
     sizes: SIZES,
-    colors: ['White', 'Black', 'Navy']
+    colors: COLORS
   },
   {
-    id: 'hoodie-black',
-  name: 'Duke Tee',
-    price: 39.00,
-  img: 'assets/img/Duke tee.webp',
-  imgs: ['assets/img/Duke  git commit -m "Rename to Vintage College Shop and update product images" tee.webp'],
+    id: 'tee-duke',
+    name: 'Duke Tee',
+    price: 18.00,
+    img: 'assets/img/Duke tee.webp',
+    imgs: ['assets/img/Duke tee.webp'],
     tag: 'New',
     sizes: SIZES,
-    colors: ['Black', 'Red']
+    colors: COLORS
   },
   {
-    id: 'cap',
-  name: 'Georgia Tech Tee',
-    price: 22.00,
-  img: 'assets/img/georgia tech tee.webp',
-  imgs: ['assets/img/georgia tech tee.webp'],
-    sizes: SIZES,
-    colors: ['Black', 'White']
-  },
-  {
-    id: 'sticker-pack',
-  name: 'Houston Tee',
-    price: 6.00,
-  img: 'assets/img/houston tee.webp',
-  imgs: ['assets/img/houston tee.webp'],
-    sizes: SIZES,
-    colors: ['Default']
-  },
-  {
-    id: 'gloves',
-  name: 'Kansas Tee',
-    price: 9.50,
-  img: 'assets/img/kansas tee.webp',
-  imgs: ['assets/img/kansas tee.webp'],
-    sizes: SIZES,
-    colors: ['Black', 'White']
-  },
-  {
-    id: 'tee-vintage',
-  name: 'Maryland Tee',
-    price: 20.00,
-  img: 'assets/img/maryland tee.webp',
-  imgs: ['assets/img/maryland tee.webp'],
-    tag: 'Limited',
-    sizes: SIZES,
-    colors: ['White', 'Black']
-  },
-  {
-    id: 'tee-long-sleeve',
-  name: 'Memphis Tee',
-    price: 24.00,
-  img: 'assets/img/memphis tee.webp',
-  imgs: ['assets/img/memphis tee.webp'],
-    tag: 'Popular',
-    sizes: SIZES,
-    colors: ['Navy', 'White']
-  },
-  {
-    id: 'tee-athletic',
-  name: 'Michigan Tee',
-    price: 22.00,
-  img: 'assets/img/michigan tee.webp',
-  imgs: ['assets/img/michigan tee.webp'],
+    id: 'tee-georgetown',
+    name: 'Georgetown Tee',
+    price: 18.00,
+    img: 'assets/img/georgetown tee.webp',
+    imgs: ['assets/img/georgetown tee.webp'],
     tag: 'New',
     sizes: SIZES,
-    colors: ['Red', 'Black']
+    colors: COLORS
   },
   {
-  id: 'tee-vintage',
-  name: 'Ohio Tee',
-    price: 19.00,
-  img: 'assets/img/ohio tee.webp',
-  imgs: ['assets/img/ohio tee.webp'],
-  tag: 'Vintage',
+    id: 'tee-georgiatech',
+    name: 'Georgia Tech Tee',
+    price: 18.00,
+    img: 'assets/img/georgia tech tee.webp',
+    imgs: ['assets/img/georgia tech tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['Navy', 'White', 'Red']
+    colors: COLORS
   },
   {
-    id: 'tee-retro',
-  name: 'Oklahoma Tee',
-    price: 21.00,
-  img: 'assets/img/oklahoma tee.webp',
-  imgs: ['assets/img/oklahoma tee.webp'],
-    tag: 'Retro',
+    id: 'tee-houston',
+    name: 'Houston Tee',
+    price: 18.00,
+    img: 'assets/img/houston tee.webp',
+    imgs: ['assets/img/houston tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['Black', 'White']
+    colors: COLORS
   },
   {
-    id: 'tee-eco',
-  name: 'UConn Tee',
-    price: 23.00,
-  img: 'assets/img/uconn tee.webp',
-  imgs: ['assets/img/uconn tee.webp'],
-    tag: 'Eco',
+    id: 'tee-iowa',
+    name: 'Iowa Tee',
+    price: 18.00,
+    img: 'assets/img/iowa tee.webp',
+    imgs: ['assets/img/iowa tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['White', 'Navy']
+    colors: COLORS
   },
   {
-    id: 'tee-premium',
-  name: 'UNLV Tee',
-    price: 26.00,
-  img: 'assets/img/unlv tee.webp',
-  imgs: ['assets/img/unlv tee.webp'],
-    tag: 'Premium',
+    id: 'tee-kansas',
+    name: 'Kansas Tee',
+    price: 18.00,
+    img: 'assets/img/kansas tee.webp',
+    imgs: ['assets/img/kansas tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['Black', 'Red']
+    colors: COLORS
   },
   {
-    id: 'tee-basic',
-    name: 'Basic Chapter Tee',
-    price: 15.00,
-      img: 'assets/img/basic_tee.jpg',
-      imgs: ['assets/img/basic_tee.jpg'],
-    tag: 'Basic',
+    id: 'tee-lsu',
+    name: 'LSU Tee',
+    price: 18.00,
+    img: 'assets/img/lsu tee.webp',
+    imgs: ['assets/img/lsu tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['White', 'Black']
+    colors: COLORS
   },
   {
-    id: 'tee-colorblock',
-    name: 'Colorblock Chapter Tee',
-    price: 21.00,
-      img: 'assets/img/colorblock_tee.jpg',
-      imgs: ['assets/img/colorblock_tee.jpg'],
-    tag: 'Trendy',
+    id: 'tee-marquette',
+    name: 'Marquette Tee',
+    price: 18.00,
+    img: 'assets/img/marquette tee.webp',
+    imgs: ['assets/img/marquette tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['Red', 'Navy']
+    colors: COLORS
   },
   {
-    id: 'tee-varsity',
-    name: 'Varsity Chapter Tee',
-    price: 20.00,
-      img: 'assets/img/varsity_tee.jpg',
-      imgs: ['assets/img/varsity_tee.jpg'],
-    tag: 'Varsity',
+    id: 'tee-maryland',
+    name: 'Maryland Tee',
+    price: 18.00,
+    img: 'assets/img/maryland tee.webp',
+    imgs: ['assets/img/maryland tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['Navy', 'White']
+    colors: COLORS
   },
   {
-    id: 'tee-slim',
-    name: 'Slim Fit Chapter Tee',
-    price: 19.50,
-      img: 'assets/img/slim_fit_tee.jpg',
-      imgs: ['assets/img/slim_fit_tee.jpg'],
-    tag: 'Slim',
+    id: 'tee-memphis',
+    name: 'Memphis Tee',
+    price: 18.00,
+    img: 'assets/img/memphis tee.webp',
+    imgs: ['assets/img/memphis tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['Black', 'White']
+    colors: COLORS
   },
   {
-    id: 'tee-graphic',
-    name: 'Graphic Chapter Tee',
-    price: 22.50,
-      img: 'assets/img/graphic_tee.jpg',
-      imgs: ['assets/img/graphic_tee.jpg'],
-    tag: 'Graphic',
+    id: 'tee-michigan',
+    name: 'Michigan Tee',
+    price: 18.00,
+    img: 'assets/img/michigan tee.webp',
+    imgs: ['assets/img/michigan tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['Red', 'Black']
+    colors: COLORS
   },
   {
-    id: 'tee-sport',
-    name: 'Sport Chapter Tee',
-    price: 23.00,
-      img: 'assets/img/sport_tee.jpg',
-      imgs: ['assets/img/sport_tee.jpg'],
-    tag: 'Sport',
+    id: 'tee-ohio',
+    name: 'Ohio Tee',
+    price: 18.00,
+    img: 'assets/img/ohio tee.webp',
+    imgs: ['assets/img/ohio tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['Navy', 'White']
+    colors: COLORS
   },
   {
-    id: 'tee-minimal',
-    name: 'Minimal Chapter Tee',
-    price: 17.00,
-      img: 'assets/img/minimal_tee.jpg',
-      imgs: ['assets/img/minimal_tee.jpg'],
-    tag: 'Minimal',
+    id: 'tee-oklahoma',
+    name: 'Oklahoma Tee',
+    price: 18.00,
+    img: 'assets/img/oklahoma tee.webp',
+    imgs: ['assets/img/oklahoma tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['White', 'Black']
+    colors: COLORS
   },
   {
-    id: 'tee-heritage',
-    name: 'Heritage Chapter Tee',
-    price: 25.00,
-      img: 'assets/img/heritage_tee.jpg',
-      imgs: ['assets/img/heritage_tee.jpg'],
-    tag: 'Heritage',
+    id: 'tee-providence',
+    name: 'Providence Tee',
+    price: 18.00,
+    img: 'assets/img/providence tee.webp',
+    imgs: ['assets/img/providence tee.webp'],
+    tag: 'New',
     sizes: SIZES,
-    colors: ['Navy', 'Red']
-  }
+    colors: COLORS
+  },
+  {
+    id: 'tee-setonhall',
+    name: 'Seton Hall Tee',
+    price: 18.00,
+    img: 'assets/img/seton-hall tee.webp',
+    imgs: ['assets/img/seton-hall tee.webp'],
+    tag: 'New',
+    sizes: SIZES,
+    colors: COLORS
+  },
+  {
+    id: 'tee-uconn',
+    name: 'UConn Tee',
+    price: 18.00,
+    img: 'assets/img/uconn tee.webp',
+    imgs: ['assets/img/uconn tee.webp'],
+    tag: 'New',
+    sizes: SIZES,
+    colors: COLORS
+  },
+  {
+    id: 'tee-unlv',
+    name: 'UNLV Tee',
+    price: 18.00,
+    img: 'assets/img/unlv tee.webp',
+    imgs: ['assets/img/unlv tee.webp'],
+    tag: 'New',
+    sizes: SIZES,
+    colors: COLORS
+  },
 ];
