@@ -18,7 +18,7 @@ window.CATALOG = [
   name: 'Duke Tee',
     price: 39.00,
   img: 'assets/img/Duke tee.webp',
-  imgs: ['assets/img/Duke tee.webp'],
+  imgs: ['assets/img/Duke  git commit -m "Rename to Vintage College Shop and update product images" tee.webp'],
     tag: 'New',
     sizes: SIZES,
     colors: ['Black', 'Red']
