@@ -1,89 +1,38 @@
-const $ = (s, r=document) => r.querySelector(s);
-const $$ = (s, r=document) => [...r.querySelectorAll(s)];
-const CART_KEY = 'campus_cart_v1';
-const THEME_KEY = 'campus_theme_v1';
+// Utility functions (shared with main.js)
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const CART_KEY = 'vintage_college_cart_v1';
 
-function getCart(){ return JSON.parse(localStorage.getItem('cart') || '{}'); }
-function setCart(c){ localStorage.setItem('cart', JSON.stringify(c)); update(); }
-function money(n){ return `$${n.toFixed(2)}`; }
-function setTheme(t){ document.documentElement.setAttribute('data-theme', t); localStorage.setItem(THEME_KEY, t); $('#theme-toggle').textContent = t === 'light' ? '🌞' : '🌙'; }
-function toggleTheme(){ const cur = localStorage.getItem(THEME_KEY) || 'dark'; setTheme(cur === 'dark' ? 'light' : 'dark'); }
-function toast(msg){ const wrap = $('#toast-wrap'); if(!wrap) return; const el = document.createElement('div'); el.className = 'toast'; el.textContent = msg; wrap.appendChild(el); setTimeout(()=>el.remove(), 2200); }
-
-function update(){
-  $('#year').textContent = new Date().getFullYear();
-  const cart = getCart(); const items = Object.values(cart);
-  const count = items.reduce((s,i)=>s+i.qty,0); $('#cart-count').textContent = count;
-
-  const list = $('#cart-items'); list.innerHTML = '';
-  let subtotal = 0;
-  if(items.length === 0){
-    list.innerHTML = '<p>Your cart is empty. <a href="index.html">Go shopping →</a></p>';
-    $('#checkout-btn').disabled = true;
-  } else {
-    $('#checkout-btn').disabled = false;
-    items.forEach(i => {
-      subtotal += i.price * i.qty;
-      const el = document.createElement('div');
-      el.className = 'cart-item fade-in is-visible';
-      el.innerHTML = `
-        <img src="assets/img/${i.id.includes('hoodie') ? 'hoodie' : i.id.includes('tee') ? 'tee' : 'notebook'}.jpg" alt="${i.name}">
-        <div>
-          <div class="row"><strong>${i.name}</strong><span>${money(i.price)}</span></div>
-          <div class="quantity">
-            <button data-act="dec" data-id="${i.id}">−</button>
-            <span>Qty: ${i.qty}</span>
-            <button data-act="inc" data-id="${i.id}">+</button>
-            <button data-act="rm" data-id="${i.id}">Remove</button>
-          </div>
-        </div>
-        <div><strong>${money(i.price * i.qty)}</strong></div>`;
-      list.appendChild(el);
-    });
-  }
-  $('#cart-subtotal').textContent = money(subtotal);
-}
-
-function onClick(e){
-  const btn = e.target.closest('button[data-act]'); if(!btn) return;
-  const id = btn.dataset.id; const act = btn.dataset.act;
-  const cart = getCart(); if(!cart[id]) return;
-  if(act === 'inc') cart[id].qty++;
-  if(act === 'dec') cart[id].qty = Math.max(0, cart[id].qty - 1);
-  if(act === 'rm') { delete cart[id]; toast('Removed from cart'); }
-  if(cart[id] && cart[id].qty === 0) delete cart[id];
-  setCart(cart);
-}
-
-function onCheckout(){
-  toast('Checkout demo — server wiring next');
-  // later: POST cart JSON to /checkout.php
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  setTheme(localStorage.getItem(THEME_KEY) || 'dark');
-  $('#theme-toggle')?.addEventListener('click', toggleTheme);
-  update();
-  $('#cart-items').addEventListener('click', onClick);
-  $('#checkout-btn').addEventListener('click', onCheckout);
-});
-
-
-// Simple cart implementation using localStorage
-
-// Cart structure: { [productId_size]: quantity }
+// Cart helpers
 function getCart() {
-  return JSON.parse(localStorage.getItem('cart') || '{}');
+  try {
+    return JSON.parse(localStorage.getItem(CART_KEY)) || {};
+  } catch {
+    return {};
+  }
 }
-function setCart(cart) {
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
+function setCart(c) {
+  localStorage.setItem(CART_KEY, JSON.stringify(c));
+  updateCartCount();
 }
+function updateCartCount() {
+  const c = getCart();
+  const t = Object.values(c).reduce((s, i) => s + (typeof i === 'object' && i.qty ? i.qty : i), 0);
+  const el = document.getElementById('cart-count');
+  if (el) el.textContent = t;
+}
+function money(n) {
+  return `$${n.toFixed(2)}`;
+}
+
+// Render cart items
 function renderCart() {
   const cart = getCart();
-  const itemsDiv = document.getElementById('cart-items');
-  const summaryDiv = document.getElementById('cart-summary');
+  const itemsDiv = $('#cart-items');
+  const summaryDiv = $('#cart-summary');
+  const messageDiv = $('#cart-message');
   if (!itemsDiv || !summaryDiv) return;
+
   let total = 0;
   let html = '';
   Object.entries(cart).forEach(([key, qty]) => {
@@ -92,55 +41,115 @@ function renderCart() {
     if (!product) return;
     total += product.price * qty;
     html += `
-      <div class="cart-item">
-        <img src="${product.img}" alt="${product.name}" style="width:60px;border-radius:8px;">
-        <div>
-          <h4>${product.name}</h4>
-          <p>Size: ${size}</p>
-          <p>Color: ${color}</p>
-          <p>$${product.price.toFixed(2)} × ${qty}</p>
+      <div class="product-card" style="flex-direction:row;align-items:center;gap:18px;margin-bottom:18px;">
+        <img src="${product.img}" alt="${product.name}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;">
+        <div style="flex:1;">
+          <h3 style="margin:0 0 4px 0;">${product.name}</h3>
+          <div style="font-size:0.95em;color:var(--muted);margin-bottom:4px;">
+            Size: ${size} &nbsp;|&nbsp; Color: ${color}
+          </div>
+          <div style="font-size:1.1em;font-weight:700;">${money(product.price)} × ${qty}</div>
         </div>
-        <div>
-          <button aria-label="Increase quantity" onclick="updateQty('${id}_${size}_${color}', 1)">+</button>
-          <button aria-label="Decrease quantity" onclick="updateQty('${id}_${size}_${color}', -1)">-</button>
-          <button aria-label="Remove item" onclick="removeItem('${id}_${size}_${color}')">Remove</button>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+          <button class="btn ghost" aria-label="Increase quantity" onclick="updateQty('${key}', 1)">+</button>
+          <button class="btn ghost" aria-label="Decrease quantity" onclick="updateQty('${key}', -1)">–</button>
+          <button class="btn ghost" aria-label="Remove item" onclick="removeItem('${key}')">Remove</button>
         </div>
       </div>
     `;
   });
   itemsDiv.innerHTML = html || `<div style="text-align:center;padding:32px;"><span style="font-size:2em;">🛒</span><p>Your cart is empty.</p></div>`;
-  summaryDiv.innerHTML = `<h3>Total: $${total.toFixed(2)}</h3>`;
+  summaryDiv.innerHTML = `<h3 style="margin-top:0;">Total: ${money(total)}</h3>`;
+  messageDiv.textContent = '';
   updateCartCount();
 }
-window.updateQty = function(key, delta) {
+window.updateQty = function (key, delta) {
   const cart = getCart();
   cart[key] = (cart[key] || 0) + delta;
   if (cart[key] <= 0) delete cart[key];
   setCart(cart);
+  renderCart();
 };
-window.removeItem = function(key) {
+window.removeItem = function (key) {
   const cart = getCart();
   delete cart[key];
   setCart(cart);
+  renderCart();
 };
-function updateCartCount() {
-  const cart = getCart();
-  const count = Object.values(cart).reduce((a, b) => a + b, 0);
-  const el1 = document.getElementById('cart-count');
-  if (el1) el1.textContent = count;
+
+// --- Search Button Expand/Collapse (same as main.js) ---
+const searchBtn = document.getElementById('search-btn');
+const searchInput = document.getElementById('search-input');
+if (searchBtn && searchInput) {
+  searchBtn.addEventListener('click', () => {
+    searchBtn.classList.add('expanded');
+    searchInput.focus();
+  });
+  searchBtn.addEventListener('focus', () => {
+    searchBtn.classList.add('expanded');
+    searchInput.focus();
+  });
+  searchInput.addEventListener('blur', () => {
+    setTimeout(() => searchBtn.classList.remove('expanded'), 100);
+  });
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      searchBtn.classList.remove('expanded');
+      searchBtn.blur();
+    }
+    if (e.key === 'Enter') {
+      searchBtn.classList.remove('expanded');
+      searchBtn.blur();
+    }
+  });
 }
+
+// Contact form validation and success message
+const contactForm = $('#contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = $('#name').value.trim();
+    const email = $('#email').value.trim();
+    const message = $('#message').value.trim();
+    const successDiv = $('#form-success');
+    let valid = true;
+    if (!name) {
+      $('#name').style.borderColor = 'var(--error)';
+      valid = false;
+    } else {
+      $('#name').style.borderColor = '';
+    }
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      $('#email').style.borderColor = 'var(--error)';
+      valid = false;
+    } else {
+      $('#email').style.borderColor = '';
+    }
+    if (!message) {
+      $('#message').style.borderColor = 'var(--error)';
+      valid = false;
+    } else {
+      $('#message').style.borderColor = '';
+    }
+    if (!valid) {
+      successDiv.textContent = "Please fill out all fields correctly.";
+      successDiv.style.color = "var(--error)";
+      return;
+    }
+    contactForm.reset();
+    successDiv.textContent = "Thank you! Your message has been sent.";
+    successDiv.style.color = "var(--success)";
+    setTimeout(() => { successDiv.textContent = ""; }, 4000);
+  });
+}
+
+// Set year in footer
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
-renderCart();
 
-document.getElementById('quickview-add').addEventListener('click', function () {
-  const productId = this.dataset.id;
-  const size = document.getElementById('quickview-size').value;
-  const cart = JSON.parse(localStorage.getItem('cart') || '{}');
-  const key = `${productId}_${size}`;
-  cart[key] = (cart[key] || 0) + 1;
-  localStorage.setItem('cart', JSON.stringify(cart));
-  document.getElementById('cart-count').textContent = Object.values(cart).reduce((a, b) => a + b, 0);
-  showToast(`Added to cart! Size: ${size}`);
-  confettiBurst(document.querySelector('#quickview .modal-content'));
+// Initial render
+document.addEventListener('DOMContentLoaded', () => {
+  renderCart();
+  updateCartCount();
 });

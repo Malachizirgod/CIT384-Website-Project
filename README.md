@@ -1,6 +1,6 @@
-# Campus Shop
+# Vintage College Shop
 
-A modern, accessible demo store for campus gear.  
+A modern, accessible demo store for vintage college gear.
 Features product pages, slide-out cart, dark/light mode, recommendations, and more.
 
 ## Quick Start
