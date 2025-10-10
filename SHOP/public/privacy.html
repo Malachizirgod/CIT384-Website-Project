@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vintage College Shop</title>
+  <title>Privacy Policy – Vintage College Shop</title>
   <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
   <header class="container header" role="banner">
-    <div class="logo">
-      <img src="assets/icons/logo.png" alt="Vintage College Shop Logo" style="height:64px;width:auto;" />
+    <a class="logo" href="index.html">
+      <img src="assets/icons/logo.svg" alt="Vintage College Shop logo" width="48" height="48" />
       <span class="logo-text">Vintage College Shop</span>
     </a>
     <nav class="main-nav" aria-label="Main navigation">
       <div class="nav-links" role="list">
-        <a href="index.html" class="nav-link active" aria-current="page">Store</a>
+        <a href="index.html" class="nav-link">Store</a>
         <a href="cart.html" class="nav-link">Cart</a>
       </div>
       <div class="nav-actions">
@@ -36,50 +36,40 @@
     </nav>
   </header>
 
-  <main class="container" id="main-content">
-    <section class="story" id="our-story" aria-labelledby="story-heading">
-      <h1 id="story-heading">Vintage stories from every campus</h1>
-      <p>Every tee in our collection is restored from real collegiate archives, complete with the soft wash and worn-in typography that alumni love. Use the search above to jump to your school or mascot and build a throwback rotation that feels custom.</p>
-    </section>
+  <main class="container legal" id="main-content">
+    <h1>Privacy Policy</h1>
+    <p class="legal-intro">Last updated: March 1, 2024</p>
+    <p>Vintage College Shop is a demo storefront created for coursework. We value your privacy and only use information you share to demonstrate user flows within this project.</p>
 
-    <section id="products" class="grid" aria-label="Product list"></section>
-    <p id="search-status" class="search-status" role="status" aria-live="polite"></p>
+    <h2>Information we collect</h2>
+    <p>We collect the name, email address, and message you submit through the contact form. This data is stored locally in your browser to simulate a support inbox.</p>
 
-    <section class="support-section" id="support" aria-labelledby="support-heading">
-      <div>
-        <h2 id="support-heading">Need a hand choosing?</h2>
-        <p>We can help you find the right era, fit, or gift. Send us a note and we’ll respond within one business day.</p>
-        <ul class="support-faq" aria-label="Quick answers">
-          <li><strong>Shipping:</strong> All orders ship free in the continental U.S.</li>
-          <li><strong>Condition:</strong> Tees are washed, inspected, and ready to wear.</li>
-          <li><strong>Sizing:</strong> Each product page lists fit notes and styling guidance.</li>
-        </ul>
-      </div>
-      <div class="contact-card" role="form" aria-labelledby="contact-heading">
-        <h3 id="contact-heading">Message our vintage curator</h3>
-        <form id="contact-form" data-contact-form novalidate>
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Your Name" required autocomplete="name" />
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="Your Email" required autocomplete="email" />
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Tell us what you are hunting for" required rows="4"></textarea>
-          <button type="submit" class="btn">Send Message</button>
-          <div id="form-success" class="form-success" role="status" aria-live="polite"></div>
-        </form>
-      </div>
-    </section>
+    <h2>How information is used</h2>
+    <ul>
+      <li>To respond to your inquiries or styling requests.</li>
+      <li>To improve the UX of this student project based on anonymized analytics.</li>
+      <li>To demonstrate e-commerce patterns in an academic setting.</li>
+    </ul>
+
+    <h2>Cookies &amp; local storage</h2>
+    <p>Your cart and theme preference are stored in your browser using local storage. No third-party trackers are installed.</p>
+
+    <h2>Data sharing</h2>
+    <p>We do not sell or share your data. When collaborating on coursework, only aggregated insights are discussed.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy? Email <a href="mailto:privacy@vintagecollegeshop.com">privacy@vintagecollegeshop.com</a>.</p>
   </main>
 
   <footer class="container footer" role="contentinfo">
     <nav class="footer-nav" aria-label="Footer navigation">
       <a href="index.html#our-story" class="footer-link">About</a>
       <span aria-hidden="true">•</span>
-      <a href="privacy.html" class="footer-link">Privacy</a>
+      <a href="privacy.html" class="footer-link" aria-current="page">Privacy</a>
       <span aria-hidden="true">•</span>
       <a href="terms.html" class="footer-link">Terms</a>
       <span aria-hidden="true">•</span>
-  <a href="mailto:support@vintagecollegeshop.com" class="footer-link">Contact</a>
+      <a href="mailto:support@vintagecollegeshop.com" class="footer-link">Contact</a>
     </nav>
     <p>© <span id="year"></span> Vintage College Shop</p>
   </footer>

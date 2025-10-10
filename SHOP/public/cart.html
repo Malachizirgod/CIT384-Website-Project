@@ -10,24 +10,27 @@
 </head>
 <body>
   <header class="container header" role="banner">
-    <div class="logo">
-      <svg width="32" height="32" fill="none" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#45736C"/><text x="16" y="22" text-anchor="middle" font-size="16" fill="#fff" font-family="Inter, sans-serif" font-weight="bold">CS</text></svg>
-  <span class="logo-text">Vintage College Shop</span>
-    </div>
+    <a class="logo" href="index.html">
+      <img src="assets/icons/logo.svg" alt="Vintage College Shop logo" width="48" height="48" />
+      <span class="logo-text">Vintage College Shop</span>
+    </a>
     <nav class="main-nav" aria-label="Main navigation">
-      <a href="index.html" class="nav-link">Store</a>
-      <a href="cart.html" class="nav-link active" aria-current="page">Cart</a>
+      <div class="nav-links" role="list">
+        <a href="index.html" class="nav-link">Store</a>
+        <a href="cart.html" class="nav-link active" aria-current="page">Cart</a>
+      </div>
       <div class="nav-actions">
-        <div class="circle-btn search-btn" id="search-btn" tabindex="0" aria-label="Search">
-          <img src="assets/icons/search.png" class="search-icon" aria-hidden="true" alt="Search" style="width:1.2em;height:1.2em;vertical-align:middle;" />
-          <input type="text" id="search-input" class="search-input" placeholder="Search..." aria-label="Search products" />
+        <div class="circle-btn search-btn" id="search-btn" tabindex="0" aria-label="Search catalog">
+          <img src="assets/icons/search.png" class="search-icon" aria-hidden="true" alt="Search" />
+          <input type="text" id="search-input" class="search-input" placeholder="Search tees or schools" aria-label="Search products" />
         </div>
-        <button id="cart-icon" class="circle-btn cart-btn" aria-label="View cart">
-          <img src="assets/icons/cart.png" alt="Cart" style="width:1.2em;height:1.2em;vertical-align:middle;" /><span id="cart-count" class="cart-count">0</span>
+        <button type="button" id="mini-cart-toggle" class="circle-btn cart-btn" aria-haspopup="dialog" aria-controls="mini-cart" aria-label="Open mini cart">
+          <img src="assets/icons/cart.png" alt="Cart" />
+          <span id="cart-count" class="cart-count" aria-live="polite">0</span>
         </button>
-        <button id="theme-toggle" class="circle-btn theme-btn" aria-label="Toggle dark/light mode">
-          <img src="assets/icons/dark-theme.png" class="theme-icon" aria-hidden="true" alt="Dark Theme" style="width:1.2em;height:1.2em;vertical-align:middle;display:none;" />
-          <img src="assets/icons/light theme.png" class="theme-icon" aria-hidden="true" alt="Light Theme" style="width:1.2em;height:1.2em;vertical-align:middle;display:none;" />
+        <button id="theme-toggle" class="circle-btn theme-btn" aria-label="Toggle dark or light mode">
+          <img src="assets/icons/dark-theme.png" class="theme-icon" aria-hidden="true" alt="Dark Theme" />
+          <img src="assets/icons/light theme.png" class="theme-icon" aria-hidden="true" alt="Light Theme" />
         </button>
       </div>
     </nav>
@@ -40,53 +43,55 @@
       <div id="cart-summary"></div>
       <div id="cart-message" class="form-success" role="status" aria-live="polite"></div>
     </section>
-    <section class="help-section" aria-labelledby="help-heading">
-      <h2 id="help-heading">Need Help?</h2>
-      <div class="help-flex">
-        <div class="faq" role="list" aria-label="Frequently Asked Questions">
-          <h3>FAQ</h3>
-          <details>
-            <summary>How do I update quantities?</summary>
-            <p>Use the + and – buttons next to each item to change the quantity, or click Remove to delete an item.</p>
-          </details>
-          <details>
-            <summary>Can I checkout?</summary>
-            <p>This is a demo project. Checkout is not available.</p>
-          </details>
-        </div>
-        <div class="contact" role="form" aria-labelledby="contact-heading">
-          <h3 id="contact-heading">Contact Us</h3>
-          <form id="contact-form" novalidate>
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" placeholder="Your Name" required autocomplete="name" />
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Your Email" required autocomplete="email" />
-            <label for="message">Message</label>
-            <textarea id="message" name="message" placeholder="Your Message" required rows="4"></textarea>
-            <button type="submit" class="btn">Send Message</button>
-            <div id="form-success" class="form-success" role="status" aria-live="polite"></div>
-          </form>
-        </div>
+    <section class="support-section support-section--compact" aria-labelledby="support-heading">
+      <div>
+        <h2 id="support-heading">Questions about checkout?</h2>
+        <p>The cart is a demo experience—no payments will be processed. You can still explore sizing and bundle totals to plan your vintage haul.</p>
+        <ul class="support-faq" aria-label="Cart tips">
+          <li><strong>Bundle savings:</strong> Add three tees to unlock an automatic 15% discount at checkout.</li>
+          <li><strong>Need styling advice?</strong> Email <a href="mailto:support@vintagecollegeshop.com">support@vintagecollegeshop.com</a> and we’ll recommend pairings.</li>
+          <li><strong>Prefer to talk?</strong> Call us at <a href="tel:18005551234">1-800-555-1234</a> weekdays 9–5 CT.</li>
+        </ul>
+      </div>
+      <div class="contact-card contact-card--alt" role="group" aria-label="Need something else?">
+        <h3>Still need help?</h3>
+        <p>Open the mini cart above to review items or drop us a note—our vintage team replies within one business day.</p>
+        <a class="btn ghost" href="mailto:support@vintagecollegeshop.com">Email support</a>
       </div>
     </section>
   </main>
 
   <footer class="container footer" role="contentinfo">
     <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="#" class="footer-link">About</a>
+      <a href="index.html#our-story" class="footer-link">About</a>
       <span aria-hidden="true">•</span>
-      <a href="#" class="footer-link">Privacy</a>
+      <a href="privacy.html" class="footer-link">Privacy</a>
       <span aria-hidden="true">•</span>
-      <a href="#" class="footer-link">Terms</a>
+      <a href="terms.html" class="footer-link">Terms</a>
       <span aria-hidden="true">•</span>
-  <a href="mailto:support@vintagecollegeshop.com" class="footer-link">Contact</a>
+      <a href="mailto:support@vintagecollegeshop.com" class="footer-link">Contact</a>
     </nav>
-  <p>© <span id="year"></span> Vintage College Shop</p>
+    <p>© <span id="year"></span> Vintage College Shop</p>
   </footer>
 
   <div id="toast-wrap" aria-live="polite" aria-atomic="true"></div>
+  <div id="mini-cart" class="mini-cart" aria-hidden="true">
+    <div class="mini-cart__overlay" data-close-mini-cart></div>
+    <aside class="mini-cart__panel" role="dialog" aria-modal="true" aria-labelledby="mini-cart-title">
+      <header class="mini-cart__header">
+        <h2 id="mini-cart-title">Your Cart</h2>
+        <button type="button" class="mini-cart__close" data-close-mini-cart aria-label="Close mini cart">×</button>
+      </header>
+      <div id="mini-cart-items" class="mini-cart__items" aria-live="polite"></div>
+      <footer class="mini-cart__footer">
+        <div id="mini-cart-summary" class="mini-cart__summary"></div>
+        <a class="btn" href="cart.html">Review full cart</a>
+      </footer>
+    </aside>
+  </div>
+
   <script src="assets/js/products.js"></script>
-  <script src="assets/js/cart.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/cart.js"></script>
 </body>
 </html>
