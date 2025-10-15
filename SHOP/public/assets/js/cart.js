@@ -1,7 +1,10 @@
+"use strict";
+
 // Cart page interactions
 const $ = (selector, root = document) => root.querySelector(selector);
 const Shop = window.Shop;
 
+// renderCart(): renders full cart list and summary
 function renderCart() {
   const cartItems = $('#cart-items');
   const cartSummary = $('#cart-summary');
@@ -11,7 +14,7 @@ function renderCart() {
   const cart = Shop.getCart();
   const entries = Object.entries(cart);
   if (!entries.length) {
-    cartItems.innerHTML = '<div class="cart-empty">🛒 Your cart is empty. Add a tee from the store to start your haul.</div>';
+    cartItems.innerHTML = '<div class="cart-empty">Your cart is empty. Add a tee from the store to start your haul.</div>';
     cartSummary.innerHTML = '';
     if (cartMessage) cartMessage.textContent = '';
     Shop.renderMiniCart();
@@ -29,13 +32,13 @@ function renderCart() {
     quantity += qty;
     return `
       <article class="cart-line" data-key="${key}">
-        <img src="${product.img}" alt="${product.name}" />
+        <img src="${product.img}" alt="${product.name}" loading="lazy" />
         <div>
           <h3>${product.name}</h3>
-          <p class="cart-line__meta">Size ${size} · ${color}</p>
+          <p class="cart-line__meta">Size ${size} • ${color}</p>
           <div class="cart-line__actions">
             <div class="qty-stepper" data-key="${key}">
-              <button type="button" data-step="-1" aria-label="Decrease quantity">−</button>
+              <button type="button" data-step="-1" aria-label="Decrease quantity">-</button>
               <input type="number" min="1" value="${qty}" aria-label="Quantity for ${product.name}" />
               <button type="button" data-step="1" aria-label="Increase quantity">+</button>
             </div>
@@ -53,7 +56,7 @@ function renderCart() {
   cartSummary.innerHTML = `
     <div class="cart-summary-card">
       <div class="summary-row"><span>Subtotal</span><span>${Shop.money(subtotal)}</span></div>
-      <div class="summary-row"><span>Bundle savings</span><span>${discount ? '− ' + Shop.money(discount) : 'Add 3 tees for 15% off'}</span></div>
+      <div class="summary-row"><span>Bundle savings</span><span>${discount ? '- ' + Shop.money(discount) : 'Add 3 tees for 15% off'}</span></div>
       <div class="summary-row"><span>Shipping</span><span>Free</span></div>
       <div class="summary-total"><span>Estimated total</span><span>${Shop.money(total)}</span></div>
       <p class="summary-note">Bundle savings unlock automatically once three tees are in your cart.</p>
@@ -65,6 +68,7 @@ function renderCart() {
   Shop.updateCartCount();
 }
 
+// updateQuantity(): updates a line qty or removes it; toasts inline message
 function updateQuantity(key, nextQty) {
   const [id] = key.split('_');
   const product = Shop.findProduct(id);
@@ -110,3 +114,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderCart();
 });
+

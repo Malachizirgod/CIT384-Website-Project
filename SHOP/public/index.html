@@ -29,6 +29,8 @@
           <img src="assets/icons/dark-theme.png" class="theme-icon" aria-hidden="true" alt="Dark Theme" />
           <img src="assets/icons/light theme.png" class="theme-icon" aria-hidden="true" alt="Light Theme" />
         </button>
+        <!-- Coupon: opens scratch-to-reveal modal -->
+        <button id="coupon-toggle" class="circle-btn" aria-label="Open coupon scratch card">%</button>
       </div>
     </nav>
   </header>
@@ -41,6 +43,8 @@
 
     <section id="products" class="grid" aria-label="Product list"></section>
     <p id="search-status" class="search-status" role="status" aria-live="polite"></p>
+    <!-- Recently Viewed: populated from localStorage -->
+    <section id="recent" aria-label="Recently viewed products"></section>
 
     <section class="support-section" id="support" aria-labelledby="support-heading">
       <div>
@@ -68,7 +72,7 @@
     </section>
   </main>
 
-  <footer class="container footer" role="contentinfo">
+    <footer class="container footer" role="contentinfo">
     <nav class="footer-nav" aria-label="Footer navigation">
       <a href="index.html#our-story" class="footer-link">About</a>
       <span aria-hidden="true">•</span>
@@ -76,7 +80,7 @@
       <span aria-hidden="true">•</span>
       <a href="terms.html" class="footer-link">Terms</a>
       <span aria-hidden="true">•</span>
-  <a href="mailto:support@vintagecollegeshop.com" class="footer-link">Contact</a>
+      <a href="mailto:support@vintagecollegeshop.com" class="footer-link">Contact</a>
     </nav>
     <p>© <span id="year"></span> Vintage College Shop</p>
   </footer>
