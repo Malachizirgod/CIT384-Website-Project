@@ -71,14 +71,13 @@ Shop.renderProducts = function renderProducts(list = window.CATALOG, term = '') 
   const grid = $('#products');
   if (!grid || !Array.isArray(list)) return;
   if (!list.length) {
-    grid.innerHTML = `<div class="card cart-empty">No tees match “${escapeHtml(term)}”. Try another school or mascot.</div>`;
+    grid.innerHTML = `<div class="card cart-empty">No tees match "${escapeHtml(term)}". Try another school or mascot.</div>`;
   } else {
     grid.innerHTML = list.map((product) => `
       <div class="product-card" data-id="${product.id}">
         <a href="product.html?id=${product.id}" class="product-link" aria-label="View details for ${escapeHtml(product.name)}">
           <img src="${product.img}" alt="${escapeHtml(product.name)} vintage tee" />
           <h3>${escapeHtml(product.name)}</h3>
-          <p>${escapeHtml(product.desc || '')}</p>
           <p class="price">${Shop.money(product.price)}</p>
         </a>
         <button class="btn add-to-cart" data-id="${product.id}" aria-label="Add ${escapeHtml(product.name)} to cart">Add to cart</button>
