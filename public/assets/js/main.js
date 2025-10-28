@@ -20,6 +20,8 @@
 
   // Establish a global namespace for the application to avoid polluting the global scope.
   const Shop = window.Shop || {};
+  // Ensure product catalog exists even if products.js fails to load
+  window.CATALOG = Array.isArray(window.CATALOG) ? window.CATALOG : [];
 
   /*
    * ===================================================================
@@ -125,17 +127,21 @@
   // --- Product Grid ---
   const renderProductGrid = (products, container, term = '') => {
     const statusEl = $('#search-status');
-    if (!products.length) {
-      container.innerHTML = `<p class="search-status">No tees match "${escapeHtml(term)}".</p>`;
+    const list = Array.isArray(products) ? products : [];
+    if (!list.length) {
+      const noData = !term && (!window.CATALOG || !window.CATALOG.length);
+      const msg = term ? `No tees match "${escapeHtml(term)}".` : (noData ? 'No products available. Ensure assets/js/products.js is loading.' : 'No products available.');
+      if (noData) console.warn('Products data not loaded: expected window.CATALOG from assets/js/products.js');
+      container.innerHTML = `<p class="search-status">${msg}</p>`;
       if (statusEl) statusEl.textContent = '';
       return;
     }
-    container.innerHTML = products.map(createProductCard).join('');
+    container.innerHTML = list.map(createProductCard).join('');
     if (statusEl) {
       const total = window.CATALOG?.length || 0;
       statusEl.textContent = term ?
-        `Showing ${products.length} result(s) for "${escapeHtml(term)}".` :
-        `Showing ${products.length} of ${total} tees.`;
+        `Showing ${list.length} result(s) for "${escapeHtml(term)}".` :
+        `Showing ${list.length} of ${total} tees.`;
     }
   };
 
@@ -393,7 +399,9 @@
   const initHomePage = () => {
     const productsContainer = $('#products');
     if (productsContainer) {
-      renderProductGrid(window.CATALOG, productsContainer);
+      // Guard if products.js failed to load; show helpful message instead of crashing
+      const catalog = Array.isArray(window.CATALOG) ? window.CATALOG : [];
+      renderProductGrid(catalog, productsContainer);
     }
 
     const recentContainer = $('#recent');
