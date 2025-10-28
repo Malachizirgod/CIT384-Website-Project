@@ -37,7 +37,6 @@
           <img src="assets/icons/dark-theme.png" class="theme-icon-dark" aria-hidden="true" alt="Dark Theme" />
           <img src="assets/icons/light theme.png" class="theme-icon-light" aria-hidden="true" alt="Light Theme" />
         </button>
-        <button id="coupon-toggle" class="circle-btn coupon-btn" aria-label="Open coupon scratch card" aria-controls="coupon-modal">%</button>
       </div>
     </nav>
   </header>
@@ -61,8 +60,12 @@
       </div>
       <div class="contact-card contact-card--alt" role="group" aria-label="Need something else?">
         <h3>Still need help?</h3>
-        <p>Open the mini cart above to review items or drop us a note—our vintage team replies within one business day.</p>
-        <a class="btn ghost" href="mailto:support@vintagecollegeshop.com">Email support</a>
+        <p class="contact-card__lead">Our vintage team can walk you through checkout or track down a specific tee.</p>
+        <ul class="contact-card-list" aria-label="What our support team can do">
+          <li>Share a curated cart review within one business day.</li>
+          <li>Recommend sizes or bundle savings before you purchase.</li>
+        </ul>
+        <a class="btn ghost contact-card__cta" href="mailto:support@vintagecollegeshop.com">Email support</a>
       </div>
     </section>
   </main>
@@ -70,6 +73,7 @@
   <footer class="container footer" role="contentinfo">
     <nav class="footer-nav" aria-label="Footer navigation">
       <a href="index.html#our-story" class="footer-link">About</a>
+      <a href="index.html#support" class="footer-link">Support</a>
       <a href="privacy.html" class="footer-link">Privacy</a>
       <a href="terms.html" class="footer-link">Terms</a>
       <a href="mailto:support@vintagecollegeshop.com" class="footer-link">Contact</a>
@@ -92,6 +96,8 @@
       </footer>
     </div>
   </aside>
+
+  <div id="modal-container"></div>
 
   <script src="assets/js/products.js"></script>
   <script src="assets/js/main.js"></script>
