@@ -23,6 +23,12 @@
   // Ensure product catalog exists even if products.js fails to load
   window.CATALOG = Array.isArray(window.CATALOG) ? window.CATALOG : [];
 
+  const NAV_LINKS = [
+    { label: 'Cart', href: 'cart.html' }
+  ];
+
+  const COUPON_CODE = 'ALUM15';
+
   /*
    * ===================================================================
    *  1. DOM & UTILITY HELPERS
@@ -34,6 +40,11 @@
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const escapeHtml = (str = "") =>
     str.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] || c));
+
+  const setAriaExpanded = (el, expanded) => {
+    if (!el) return;
+    el.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  };
 
   /*
    * ===================================================================
@@ -138,7 +149,7 @@
     }
     container.innerHTML = list.map(createProductCard).join('');
     if (statusEl) {
-      const total = window.CATALOG?.length || 0;
+      const total = Array.isArray(window.CATALOG) ? window.CATALOG.length : 0;
       statusEl.textContent = term ?
         `Showing ${list.length} result(s) for "${escapeHtml(term)}".` :
         `Showing ${list.length} of ${total} tees.`;
@@ -218,7 +229,11 @@
   };
 
   const removeItemFromCart = (key) => {
-    const productName = State.cart[key] ? window.CATALOG.find(p => p.id === key.split('_')[0])?.name : '';
+    let productName = '';
+    if (State.cart[key] && Array.isArray(window.CATALOG)) {
+      const foundProduct = window.CATALOG.find(p => p.id === key.split('_')[0]);
+      productName = foundProduct ? foundProduct.name : '';
+    }
     delete State.cart[key];
     saveCart();
     if (productName) toast(`Removed ${productName} from cart`);
@@ -245,7 +260,10 @@
   };
 
   // Product helpers
-  const findProduct = (id) => window.CATALOG?.find(p => p.id === id);
+  const findProduct = (id) => {
+    if (!Array.isArray(window.CATALOG)) return undefined;
+    return window.CATALOG.find(p => p.id === id);
+  };
 
   /*
    * ===================================================================
@@ -290,9 +308,26 @@
 
   const initThemeToggle = () => {
     applyTheme(State.theme);
-    $('#theme-toggle')?.addEventListener('click', () => {
+    const themeToggleBtn = $('#theme-toggle');
+    if (!themeToggleBtn) return;
+    themeToggleBtn.addEventListener('click', () => {
       const newTheme = State.theme === 'light' ? 'dark' : 'light';
       applyTheme(newTheme);
+    });
+  };
+
+  const initNavigationLinks = () => {
+    const lists = $$('.nav-links');
+    if (!lists.length) return;
+    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const template = NAV_LINKS.map(({ href, label }) => {
+      const [base] = href.split('#');
+      const isActive = currentPath === base || (currentPath === '' && base === 'index.html');
+      const ariaCurrent = isActive ? ' aria-current="page"' : '';
+      return `<li><a class="nav-link${isActive ? ' active' : ''}" href="${href}"${ariaCurrent}>${escapeHtml(label)}</a></li>`;
+    }).join('');
+    lists.forEach((list) => {
+      list.innerHTML = template;
     });
   };
 
@@ -308,17 +343,21 @@
       miniCart.classList.add('is-open');
       miniCart.setAttribute('aria-hidden', 'false');
       const panel = $('#mini-cart .mini-cart-panel') || $('#mini-cart .mini-cart__panel') || miniCart;
-      cleanupFocusTrap = trapFocus(panel);
+      cleanupFocusTrap = trapFocus(panel) || (() => {});
+      setAriaExpanded(toggleButton, true);
     };
 
     const closeCart = () => {
       miniCart.classList.remove('is-open');
       miniCart.setAttribute('aria-hidden', 'true');
       cleanupFocusTrap();
-      toggleButton.focus();
+      setAriaExpanded(toggleButton, false);
+      if (toggleButton) toggleButton.focus();
     };
 
-    toggleButton?.addEventListener('click', openCart);
+    if (toggleButton) {
+      toggleButton.addEventListener('click', openCart);
+    }
     closeElements.forEach(el => el.addEventListener('click', closeCart));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && miniCart.classList.contains('is-open')) closeCart();
@@ -343,8 +382,20 @@
 
     menuToggle.addEventListener('click', () => {
       const isOpen = mainNav.classList.toggle('is-open');
-      menuToggle.setAttribute('aria-expanded', isOpen);
+      menuToggle.classList.toggle('is-open', isOpen);
+      setAriaExpanded(menuToggle, isOpen);
     });
+
+    mainNav.addEventListener('click', (event) => {
+      if (!mainNav.classList.contains('is-open')) return;
+      if (event.target.closest('.nav-link')) {
+        mainNav.classList.remove('is-open');
+        menuToggle.classList.remove('is-open');
+        setAriaExpanded(menuToggle, false);
+      }
+    });
+
+    setAriaExpanded(menuToggle, false);
   };
 
   // --- Search ---
@@ -380,7 +431,7 @@
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      statusEl.textContent = 'Thanks! We'll be in touch soon.';
+      statusEl.textContent = "Thanks! We'll be in touch soon.";
       statusEl.className = 'form-status success';
       form.reset();
       setTimeout(() => {
@@ -421,6 +472,204 @@
         }
     });
   };
+
+  const setupScratchCard = (canvas, onReveal) => {
+    if (!canvas || typeof canvas.getContext !== 'function') {
+      return { reveal: () => {} };
+    }
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const container = canvas.parentElement;
+    const bounds = container.getBoundingClientRect();
+    const width = Math.max(bounds.width, 280);
+    const height = Math.max(bounds.height, 160);
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(dpr, dpr);
+    ctx.fillStyle = '#B99B71';
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = '#D6C2A5';
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = 'destination-out';
+    let scratching = false;
+    let revealed = false;
+
+    const scratch = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      ctx.beginPath();
+      ctx.arc(x, y, 24, 0, Math.PI * 2);
+      ctx.fill();
+    };
+
+    const evaluateReveal = () => {
+      if (revealed) return;
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      let cleared = 0;
+      for (let i = 3; i < imageData.data.length; i += 4) {
+        if (imageData.data[i] === 0) cleared++;
+      }
+      const total = canvas.width * canvas.height;
+      if (total && cleared / total > 0.5) {
+        revealed = true;
+        onReveal();
+      }
+    };
+
+    const handlePointerDown = (event) => {
+      scratching = true;
+      canvas.setPointerCapture(event.pointerId);
+      scratch(event);
+      canvas.style.cursor = 'grabbing';
+    };
+
+    const handlePointerMove = (event) => {
+      if (!scratching) return;
+      scratch(event);
+    };
+
+    const handlePointerUp = (event) => {
+      if (!scratching) return;
+      scratching = false;
+      if (canvas.hasPointerCapture(event.pointerId)) {
+        canvas.releasePointerCapture(event.pointerId);
+      }
+      evaluateReveal();
+      canvas.style.cursor = '';
+    };
+
+    canvas.addEventListener('pointerdown', handlePointerDown);
+    canvas.addEventListener('pointermove', handlePointerMove);
+    canvas.addEventListener('pointerup', handlePointerUp);
+    canvas.addEventListener('pointerleave', handlePointerUp);
+
+    const clearCard = () => {
+      revealed = true;
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    };
+
+    return {
+      reveal: clearCard
+    };
+  };
+
+  const initCouponModal = () => {
+    const toggle = $('#coupon-toggle');
+    if (!toggle) return;
+    let overlay = null;
+    let cleanupFocusTrap = () => {};
+    let scratchCard = null;
+    const handleScratchReveal = () => {
+      revealCoupon();
+      toast(`Coupon unlocked! Use code ${COUPON_CODE}.`);
+    };
+
+    const modalContainer = $('#modal-container') || (() => {
+      const div = document.createElement('div');
+      div.id = 'modal-container';
+      document.body.appendChild(div);
+      return div;
+    })();
+
+    const revealCoupon = () => {
+      if (!overlay) return;
+      const wrapper = overlay.querySelector('.scratch-card-container');
+      if (wrapper) wrapper.classList.add('is-revealed');
+      if (scratchCard) scratchCard.reveal();
+      const canvas = overlay.querySelector('#scratch-canvas');
+      if (canvas) canvas.style.cursor = 'default';
+      State.couponRevealed = true;
+      setStored(STORAGE_KEYS.COUPON, true);
+      const message = overlay.querySelector('.coupon-message');
+      if (message) message.textContent = `Code ${COUPON_CODE} unlocked! Use it at checkout for bundle savings.`;
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText(COUPON_CODE).catch(() => {});
+      }
+    };
+
+    const closeModal = () => {
+      if (!overlay) return;
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      cleanupFocusTrap();
+      setAriaExpanded(toggle, false);
+      toggle.focus();
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape' && overlay && overlay.classList.contains('is-open')) {
+        event.preventDefault();
+        closeModal();
+      }
+    };
+
+    const ensureModal = () => {
+      if (overlay) return;
+      overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.id = 'coupon-modal';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-hidden', 'true');
+      overlay.innerHTML = `
+        <div class="modal-panel" role="document">
+          <button type="button" class="modal-close" data-close-modal aria-label="Close coupon modal">×</button>
+          <h2>Scratch &amp; save</h2>
+          <p>Reveal your alumni discount for vintage tees.</p>
+          <div class="scratch-card-container">
+            <canvas id="scratch-canvas" width="320" height="180"></canvas>
+            <div class="coupon-code" aria-live="polite" role="status">${COUPON_CODE}</div>
+          </div>
+          <p class="coupon-message" aria-live="polite"></p>
+          <p class="coupon-note">Use code <strong>${COUPON_CODE}</strong> when you add three tees to unlock 15% off.</p>
+        </div>
+      `;
+      modalContainer.appendChild(overlay);
+
+      const closeBtn = overlay.querySelector('[data-close-modal]');
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      overlay.addEventListener('click', (event) => {
+        if (event.target === overlay) closeModal();
+      });
+      document.addEventListener('keydown', handleEscape);
+    };
+
+    const ensureScratchCard = () => {
+      if (!overlay || scratchCard) return;
+      const canvas = overlay.querySelector('#scratch-canvas');
+      if (!canvas) return;
+      scratchCard = setupScratchCard(canvas, handleScratchReveal);
+      if (State.couponRevealed) {
+        scratchCard.reveal();
+      }
+    };
+
+    const openModal = () => {
+      ensureModal();
+      if (!overlay) return;
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      setAriaExpanded(toggle, true);
+      const panel = overlay.querySelector('.modal-panel');
+      cleanupFocusTrap = trapFocus(panel) || (() => {});
+      if (State.couponRevealed) {
+        revealCoupon();
+      }
+      requestAnimationFrame(() => {
+        ensureScratchCard();
+        if (State.couponRevealed) {
+          revealCoupon();
+        }
+      });
+    };
+
+    toggle.addEventListener('click', openModal);
+    setAriaExpanded(toggle, false);
+  };
   
   /*
    * ===================================================================
@@ -432,11 +681,13 @@
     loadState(); // Load data from localStorage first
 
     // Global initializers
+    initNavigationLinks();
     initThemeToggle();
     initMiniCart();
     initMobileNav();
     initSearch();
     initContactForm();
+    initCouponModal();
     updateCartCount();
 
     // Page-specific initializers
@@ -445,7 +696,10 @@
     }
     
     // Set current year in footer
-    $('#year').textContent = new Date().getFullYear();
+    const yearEl = $('#year');
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
 
     console.log("Campus Shop initialized!");
   };
