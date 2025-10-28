@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Cart - Vintage College Shop</title>
+  <!-- Favicon uses the provided PNG logo for consistency and to avoid missing SVG -->
+  <link rel="icon" href="assets/icons/logo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="container header" role="banner">
+    <a class="logo" href="index.html">
+      <!-- Header logo: uses logo.png per requirements -->
+      <img src="assets/icons/logo.png" alt="Vintage College Shop Logo" class="logo-img" />
+      <span class="logo-text">Campus Shop</span>
+    </a>
+    <button id="menu-toggle" class="menu-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="main-nav">
+      <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4H21V6H3V4ZM3 11H21V13H3V11ZM3 18H21V20H3V18Z"></path></svg>
+      <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636l4.95 4.95z"></path></svg>
+    </button>
+    <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+      <ul class="nav-links" role="list"></ul>
+      <div class="nav-actions">
+        <div class="search-container">
+          <button id="search-toggle" class="circle-btn search-toggle" aria-label="Toggle search" aria-expanded="false">
+            <img src="assets/icons/search.png" class="search-icon" aria-hidden="true" alt="Search" />
+          </button>
+          <input type="text" id="search-input" class="search-input" placeholder="Search tees..." aria-label="Search products" />
+        </div>
+        <button type="button" id="mini-cart-toggle" class="circle-btn cart-btn" aria-haspopup="dialog" aria-controls="mini-cart" aria-label="Open mini cart">
+          <img src="assets/icons/cart.png" alt="Cart" />
+          <span id="cart-count" class="cart-count" aria-live="polite">0</span>
+        </button>
+        <button id="theme-toggle" class="circle-btn theme-btn" aria-label="Toggle dark or light mode">
+          <img src="assets/icons/dark-theme.png" class="theme-icon-dark" aria-hidden="true" alt="Dark Theme" />
+          <img src="assets/icons/light theme.png" class="theme-icon-light" aria-hidden="true" alt="Light Theme" />
+        </button>
+        <button id="coupon-toggle" class="circle-btn coupon-btn" aria-label="Open coupon scratch card" aria-controls="coupon-modal">%</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container" id="main-content">
+    <h1>Your Cart</h1>
+    <section id="cart-section" aria-label="Shopping cart">
+      <div id="cart-items"></div>
+      <div id="cart-summary"></div>
+      <div id="cart-message" class="form-success" role="status" aria-live="polite"></div>
+    </section>
+    <section class="support-section support-section--compact" aria-labelledby="support-heading">
+      <div>
+        <h2 id="support-heading">Questions about checkout?</h2>
+        <p>The cart is a demo experience—no payments will be processed. You can still explore sizing and bundle totals to plan your vintage haul.</p>
+        <ul class="support-faq" aria-label="Cart tips">
+          <li><strong>Bundle savings:</strong> Add three tees to unlock an automatic 15% discount at checkout.</li>
+          <li><strong>Need styling advice?</strong> Email <a href="mailto:support@vintagecollegeshop.com">support@vintagecollegeshop.com</a> and we'll recommend pairings.</li>
+          <li><strong>Prefer to talk?</strong> Call us at <a href="tel:18005551234">1-800-555-1234</a> weekdays 9-5 CT.</li>
+        </ul>
+      </div>
+      <div class="contact-card contact-card--alt" role="group" aria-label="Need something else?">
+        <h3>Still need help?</h3>
+        <p>Open the mini cart above to review items or drop us a note—our vintage team replies within one business day.</p>
+        <a class="btn ghost" href="mailto:support@vintagecollegeshop.com">Email support</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer" role="contentinfo">
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="index.html#our-story" class="footer-link">About</a>
+      <a href="privacy.html" class="footer-link">Privacy</a>
+      <a href="terms.html" class="footer-link">Terms</a>
+      <a href="mailto:support@vintagecollegeshop.com" class="footer-link">Contact</a>
+    </nav>
+    <p>&copy; <span id="year"></span> Campus Shop</p>
+  </footer>
+
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <aside id="mini-cart" class="mini-cart" aria-hidden="true" aria-labelledby="mini-cart-title">
+    <div class="mini-cart-overlay" data-close-mini-cart></div>
+    <div class="mini-cart-panel" role="dialog" aria-modal="true" aria-labelledby="mini-cart-title">
+      <header class="mini-cart-header">
+        <h2 id="mini-cart-title">Your Cart</h2>
+        <button type="button" class="mini-cart-close" data-close-mini-cart aria-label="Close mini cart">x</button>
+      </header>
+      <div id="mini-cart-items" class="mini-cart-items" aria-live="polite"></div>
+      <footer class="mini-cart-footer">
+        <div id="mini-cart-summary" class="mini-cart-summary"></div>
+        <a class="btn" href="cart.html">Review Full Cart</a>
+      </footer>
+    </div>
+  </aside>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/cart.js"></script>
+</body>
+</html>

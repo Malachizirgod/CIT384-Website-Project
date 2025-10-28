@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <!-- 
+    Metadata, fonts, and stylesheets.
+    - Sets character encoding, viewport for responsiveness, and page title.
+    - Loads the Inter font family from Google Fonts.
+    - Links to the main stylesheet for site-wide styling.
+  -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vintage College Shop</title>
+  <!-- Favicon uses the provided PNG logo for consistency and to avoid missing SVG -->
+  <link rel="icon" href="assets/icons/logo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+  <!-- 
+    Header: Contains the site logo, primary navigation, and action buttons.
+    - Becomes a column on smaller screens for mobile-first responsiveness.
+    - Uses ARIA roles for accessibility.
+  -->
+  <header class="container header" role="banner">
+    <a class="logo" href="index.html">
+      <!-- Header logo: uses logo.png per requirements -->
+      <img src="assets/icons/logo.png" alt="Vintage College Shop Logo" class="logo-img" />
+      <span class="logo-text">Campus Shop</span>
+    </a>
+    
+    <!-- Hamburger menu button for mobile -->
+    <button id="menu-toggle" class="menu-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="main-nav">
+      <svg class="icon-menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 4H21V6H3V4ZM3 11H21V13H3V11ZM3 18H21V20H3V18Z"></path></svg>
+      <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636l4.95 4.95z"></path></svg>
+    </button>
+    
+    <!-- 
+      Main Navigation: Houses page links and user actions.
+      - Uses a <ul> for semantic correctness.
+      - Hidden on mobile and toggled by the menu button.
+    -->
+    <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+      <ul class="nav-links" role="list"></ul>
+      
+      <!-- 
+        Navigation Actions: Search, cart, theme toggle, and coupon.
+        - Search bar is collapsed by default and expands on click.
+        - Cart button shows the number of items and opens a mini-cart sidebar.
+      -->
+      <div class="nav-actions">
+        <div class="search-container">
+          <button id="search-toggle" class="circle-btn search-toggle" aria-label="Toggle search" aria-expanded="false">
+             <img src="assets/icons/search.png" class="search-icon" aria-hidden="true" alt="Search"/>
+          </button>
+          <input type="text" id="search-input" class="search-input" placeholder="Search tees..." aria-label="Search products" />
+        </div>
+        <button type="button" id="mini-cart-toggle" class="circle-btn cart-btn" aria-haspopup="dialog" aria-controls="mini-cart" aria-label="Open mini cart">
+          <img src="assets/icons/cart.png" alt="Cart" />
+          <span id="cart-count" class="cart-count" aria-live="polite">0</span>
+        </button>
+        <button id="theme-toggle" class="circle-btn theme-btn" aria-label="Toggle dark or light mode">
+          <img src="assets/icons/dark-theme.png" class="theme-icon-dark" aria-hidden="true" alt="Dark Theme" />
+          <img src="assets/icons/light theme.png" class="theme-icon-light" aria-hidden="true" alt="Light Theme" />
+        </button>
+        <button id="coupon-toggle" class="circle-btn coupon-btn" aria-label="Open coupon scratch card" aria-controls="coupon-modal">%</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content: Houses all primary sections of the page. -->
+  <main class="container" id="main-content">
+    
+    <!-- Hero Section: Introduces the shop with a heading and brief description. -->
+    <section class="story" id="our-story" aria-labelledby="story-heading">
+      <h1 id="story-heading">Vintage stories from every campus</h1>
+      <p>Every tee in our collection is restored from real collegiate archives, complete with the soft wash and worn-in typography that alumni love.</p>
+    </section>
+
+    <!-- 
+      Product Grid: Displays the list of available products.
+      - Populated dynamically by JavaScript.
+      - Includes a status element for search feedback.
+    -->
+    <section id="products" class="grid" aria-label="Product list"></section>
+    <p id="search-status" class="search-status" role="status" aria-live="polite"></p>
+    
+    <!-- Recently Viewed: Shows products the user has recently looked at. -->
+    <section id="recent" aria-label="Recently viewed products"></section>
+
+    <!-- 
+      Support Section: Provides help information and a contact form.
+      - Uses a two-column layout on larger screens.
+    -->
+    <section class="support-section" id="support" aria-labelledby="support-heading">
+      <div>
+        <h2 id="support-heading">Need a hand choosing?</h2>
+        <p>We can help you find the right era, fit, or gift. Send us a note and we’ll respond within one business day.</p>
+        <ul class="support-faq" aria-label="Quick answers">
+          <li><strong>Shipping:</strong> All orders ship free in the continental U.S.</li>
+          <li><strong>Condition:</strong> Tees are washed, inspected, and ready to wear.</li>
+          <li><strong>Sizing:</strong> Each product page lists fit notes for guidance.</li>
+        </ul>
+      </div>
+      <div class="contact-card" role="form" aria-labelledby="contact-heading">
+        <h3 id="contact-heading">Message our vintage curator</h3>
+        <form id="contact-form" novalidate>
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your Name" required autocomplete="name" />
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Your Email" required autocomplete="email" />
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="What are you hunting for?" required rows="4"></textarea>
+          <button type="submit" class="btn">Send Message</button>
+          <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer: Contains secondary navigation and copyright information. -->
+  <footer class="container footer" role="contentinfo">
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="#our-story" class="footer-link">About</a>
+      <a href="privacy.html" class="footer-link">Privacy</a>
+      <a href="terms.html" class="footer-link">Terms</a>
+      <a href="mailto:support@vintagecollegeshop.com" class="footer-link">Contact</a>
+    </nav>
+    <p>© <span id="year"></span> Campus Shop</p>
+  </footer>
+
+  <!-- 
+    Toast Notifications: A container for pop-up messages.
+    - Used for confirmations like "Added to cart."
+    - ARIA attributes make it accessible to screen readers.
+  -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- 
+    Mini-Cart: A slide-out panel showing cart contents.
+    - Initially hidden and toggled by the cart button.
+    - `aria-modal="true"` and focus trapping improve accessibility.
+  -->
+  <aside id="mini-cart" class="mini-cart" aria-hidden="true" aria-labelledby="mini-cart-title">
+    <div class="mini-cart-overlay" data-close-mini-cart></div>
+    <div class="mini-cart-panel" role="dialog" aria-modal="true" aria-labelledby="mini-cart-title">
+      <header class="mini-cart-header">
+        <h2 id="mini-cart-title">Your Cart</h2>
+        <button type="button" class="mini-cart-close" data-close-mini-cart aria-label="Close mini cart">×</button>
+      </header>
+      <div id="mini-cart-items" class="mini-cart-items" aria-live="polite"></div>
+      <footer class="mini-cart-footer">
+        <div id="mini-cart-summary" class="mini-cart-summary"></div>
+        <a class="btn" href="cart.html">Review Full Cart</a>
+      </footer>
+    </div>
+  </aside>
+  
+  <!-- 
+    Modal Dialogs: A container for pop-up modals like the coupon and quick view.
+    - Overlay and panel structure.
+  -->
+  <div id="modal-container"></div>
+
+  <!-- 
+    JavaScript files:
+    - products.js: Contains the product data.
+    - main.js: Contains all the application logic.
+  -->
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
