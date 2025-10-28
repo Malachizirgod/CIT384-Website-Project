@@ -26,6 +26,7 @@
   --brand: #45736C;
   --brand-light: rgba(69, 115, 108, 0.12);
   --border: #E2DED7;
+  --brand-accent: #5A9188;
   --success: #8FA68E;
   --error: #BF6D5A;
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.07);
@@ -41,6 +42,7 @@
   --brand: #76A09E;
   --brand-light: rgba(118, 160, 158, 0.15);
   --border: #37332E;
+  --brand-accent: #8ABAB6;
   --success: #A5C6AB;
   --error: #D69781;
 }
@@ -425,6 +427,82 @@ html[data-theme='dark'] .theme-btn .theme-icon-dark {
   border-radius: 16px;
   padding: 1.5rem;
   border: 1px solid var(--border);
+}
+
+.contact-card--alt {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--brand), var(--brand-accent));
+  color: #FFFFFF;
+  border: none;
+  box-shadow: var(--shadow-md);
+  display: grid;
+  gap: 1rem;
+}
+
+.contact-card--alt::after {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 160px;
+  height: 160px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+
+.contact-card--alt > * {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-card__lead {
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.6;
+}
+
+.contact-card-list {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 0.25rem;
+}
+
+.contact-card-list li {
+  color: rgba(255, 255, 255, 0.92);
+  line-height: 1.5;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 0.5rem;
+}
+
+.contact-card-list li::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-top: 0.45rem;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.contact-card__cta {
+  justify-self: start;
+}
+
+
+.contact-card--alt .btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: none;
+}
+
+.contact-card--alt .btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: none;
 }
 
 .contact-card h3 {
