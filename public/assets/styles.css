@@ -133,8 +133,20 @@ a:hover {
   color: var(--text);
 }
 
+.menu-toggle .icon-menu {
+  display: block;
+}
+
 .menu-toggle .icon-close {
   display: none;
+}
+
+.menu-toggle.is-open .icon-menu {
+  display: none;
+}
+
+.menu-toggle.is-open .icon-close {
+  display: block;
 }
 
 .main-nav {
@@ -776,6 +788,19 @@ textarea {
   cursor: grab;
 }
 
+.scratch-card-container canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.scratch-card-container.is-revealed #scratch-canvas {
+  display: none;
+}
+
+.scratch-card-container.is-revealed .coupon-code {
+  box-shadow: inset 0 0 0 2px var(--brand);
+}
+
 .coupon-code {
   position: absolute;
   inset: 0;
@@ -788,6 +813,20 @@ textarea {
   background: var(--bg);
   border: 2px dashed var(--border);
   border-radius: 12px;
+}
+
+.coupon-message {
+  text-align: center;
+  font-weight: 600;
+  color: var(--brand);
+  min-height: 1.5rem;
+  margin-top: 1rem;
+}
+
+.coupon-note {
+  text-align: center;
+  color: var(--muted);
+  margin-top: 0.75rem;
 }
 
 /* Accessibility */
