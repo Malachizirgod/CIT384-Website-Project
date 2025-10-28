@@ -434,7 +434,7 @@
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      statusEl.textContent = 'Thanks! We'll be in touch soon.';
+      statusEl.textContent = "Thanks! We'll be in touch soon.";
       statusEl.className = 'form-status success';
       form.reset();
       setTimeout(() => {

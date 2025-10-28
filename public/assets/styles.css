@@ -247,11 +247,6 @@ html[data-theme='dark'] .theme-btn .theme-icon-dark {
   display: none;
 }
 
-.coupon-btn {
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
 /* Search Component */
 .search-container {
   display: flex;
