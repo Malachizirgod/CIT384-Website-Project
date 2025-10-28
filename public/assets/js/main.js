@@ -152,7 +152,7 @@
     }
     container.innerHTML = list.map(createProductCard).join('');
     if (statusEl) {
-      const total = window.CATALOG?.length || 0;
+      const total = Array.isArray(window.CATALOG) ? window.CATALOG.length : 0;
       statusEl.textContent = term ?
         `Showing ${list.length} result(s) for "${escapeHtml(term)}".` :
         `Showing ${list.length} of ${total} tees.`;
@@ -232,7 +232,11 @@
   };
 
   const removeItemFromCart = (key) => {
-    const productName = State.cart[key] ? window.CATALOG.find(p => p.id === key.split('_')[0])?.name : '';
+    let productName = '';
+    if (State.cart[key] && Array.isArray(window.CATALOG)) {
+      const foundProduct = window.CATALOG.find(p => p.id === key.split('_')[0]);
+      productName = foundProduct ? foundProduct.name : '';
+    }
     delete State.cart[key];
     saveCart();
     if (productName) toast(`Removed ${productName} from cart`);
@@ -259,7 +263,10 @@
   };
 
   // Product helpers
-  const findProduct = (id) => window.CATALOG?.find(p => p.id === id);
+  const findProduct = (id) => {
+    if (!Array.isArray(window.CATALOG)) return undefined;
+    return window.CATALOG.find(p => p.id === id);
+  };
 
   /*
    * ===================================================================
@@ -304,7 +311,9 @@
 
   const initThemeToggle = () => {
     applyTheme(State.theme);
-    $('#theme-toggle')?.addEventListener('click', () => {
+    const themeToggleBtn = $('#theme-toggle');
+    if (!themeToggleBtn) return;
+    themeToggleBtn.addEventListener('click', () => {
       const newTheme = State.theme === 'light' ? 'dark' : 'light';
       applyTheme(newTheme);
     });
@@ -349,7 +358,9 @@
       toggleButton?.focus();
     };
 
-    toggleButton?.addEventListener('click', openCart);
+    if (toggleButton) {
+      toggleButton.addEventListener('click', openCart);
+    }
     closeElements.forEach(el => el.addEventListener('click', closeCart));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && miniCart.classList.contains('is-open')) closeCart();
@@ -688,7 +699,10 @@
     }
     
     // Set current year in footer
-    $('#year').textContent = new Date().getFullYear();
+    const yearEl = $('#year');
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
 
     console.log("Campus Shop initialized!");
   };
