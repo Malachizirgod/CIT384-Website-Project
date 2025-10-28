@@ -346,7 +346,7 @@
       miniCart.classList.add('is-open');
       miniCart.setAttribute('aria-hidden', 'false');
       const panel = $('#mini-cart .mini-cart-panel') || $('#mini-cart .mini-cart__panel') || miniCart;
-      cleanupFocusTrap = trapFocus(panel) || (() => {});
+      cleanupFocusTrap = trapFocus(panel);
       setAriaExpanded(toggleButton, true);
     };
 
@@ -355,7 +355,7 @@
       miniCart.setAttribute('aria-hidden', 'true');
       cleanupFocusTrap();
       setAriaExpanded(toggleButton, false);
-      if (toggleButton) toggleButton.focus();
+      toggleButton?.focus();
     };
 
     if (toggleButton) {
@@ -581,15 +581,15 @@
     const revealCoupon = () => {
       if (!overlay) return;
       const wrapper = overlay.querySelector('.scratch-card-container');
-      if (wrapper) wrapper.classList.add('is-revealed');
-      if (scratchCard) scratchCard.reveal();
+      wrapper?.classList.add('is-revealed');
+      scratchCard?.reveal();
       const canvas = overlay.querySelector('#scratch-canvas');
       if (canvas) canvas.style.cursor = 'default';
       State.couponRevealed = true;
       setStored(STORAGE_KEYS.COUPON, true);
       const message = overlay.querySelector('.coupon-message');
       if (message) message.textContent = `Code ${COUPON_CODE} unlocked! Use it at checkout for bundle savings.`;
-      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      if (navigator.clipboard?.writeText) {
         navigator.clipboard.writeText(COUPON_CODE).catch(() => {});
       }
     };
@@ -604,7 +604,7 @@
     };
 
     const handleEscape = (event) => {
-      if (event.key === 'Escape' && overlay && overlay.classList.contains('is-open')) {
+      if (event.key === 'Escape' && overlay?.classList.contains('is-open')) {
         event.preventDefault();
         closeModal();
       }
@@ -634,7 +634,7 @@
       modalContainer.appendChild(overlay);
 
       const closeBtn = overlay.querySelector('[data-close-modal]');
-      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      closeBtn?.addEventListener('click', closeModal);
       overlay.addEventListener('click', (event) => {
         if (event.target === overlay) closeModal();
       });
