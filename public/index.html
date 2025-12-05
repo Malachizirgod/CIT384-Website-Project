@@ -94,7 +94,7 @@
     <section class="support-section" id="support" aria-labelledby="support-heading">
       <div>
         <h2 id="support-heading">Need a hand choosing?</h2>
-        <p>We can help you find the right era, fit, or gift. Send us a note and we’ll respond within one business day.</p>
+        <p>We can help you find the right era, fit, or gift. Send us a note and we'll respond within one business day.</p>
         <ul class="support-faq" aria-label="Quick answers">
           <li><strong>Shipping:</strong> All orders ship free in the continental U.S.</li>
           <li><strong>Condition:</strong> Tees are washed, inspected, and ready to wear.</li>
@@ -112,6 +112,49 @@
           <textarea id="message" name="message" placeholder="What are you hunting for?" required rows="4"></textarea>
           <button type="submit" class="btn">Send Message</button>
           <div id="form-status" class="form-status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="support-section support-section--compact" id="feedback" aria-labelledby="feedback-heading">
+      <div>
+        <h2 id="feedback-heading">How are we doing?</h2>
+        <p>Share a quick note so we can improve sizing tips, shipping info, and the vintage picks we highlight.</p>
+        <ul class="support-faq" aria-label="Feedback ideas">
+          <li><strong>Found a bug?</strong> Tell us what broke and where.</li>
+          <li><strong>Need features?</strong> Suggest filters, sizes, or schools you want.</li>
+          <li><strong>Speed check:</strong> Let us know if any page feels slow.</li>
+        </ul>
+      </div>
+      <div class="contact-card contact-card--alt" role="form" aria-labelledby="feedback-heading">
+        <form id="feedback-form" novalidate>
+          <label for="experience">Overall experience</label>
+          <select id="experience" name="experience">
+            <option value="Great">Great</option>
+            <option value="Good">Good</option>
+            <option value="Okay">Okay</option>
+            <option value="Needs work">Needs work</option>
+          </select>
+          <label for="likelihood">How likely to recommend?</label>
+          <select id="likelihood" name="likelihood">
+            <option value="10">10 - Extremely likely</option>
+            <option value="9">9</option>
+            <option value="8">8</option>
+            <option value="7">7</option>
+            <option value="6">6</option>
+            <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+            <option value="0">0 - Not at all</option>
+          </select>
+          <label for="comments">Comments</label>
+          <textarea id="comments" name="comments" placeholder="Tell us what to improve next" rows="3"></textarea>
+          <label for="feedbackEmail">Email (optional)</label>
+          <input type="email" id="feedbackEmail" name="feedbackEmail" placeholder="you@example.com" autocomplete="email" />
+          <button type="submit" class="btn">Send feedback</button>
+          <div id="feedback-status" class="form-status" role="status" aria-live="polite"></div>
         </form>
       </div>
     </section>

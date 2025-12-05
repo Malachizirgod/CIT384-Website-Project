@@ -1,4 +1,114 @@
 const $ = (selector, root = document) => root.querySelector(selector);
+const state = {
+  product: null,
+  reviews: []
+};
+
+const renderStars = (rating = 0) => {
+  const r = Math.max(0, Math.min(5, Number(rating) || 0));
+  return '★'.repeat(Math.round(r)).padEnd(5, '☆');
+};
+
+function renderReviews(listEl, emptyEl, reviews = []) {
+  if (!listEl || !emptyEl) return;
+  if (!reviews.length) {
+    listEl.innerHTML = '';
+    emptyEl.style.display = '';
+    emptyEl.textContent = 'No reviews yet. Be the first to share.';
+    return;
+  }
+  emptyEl.style.display = 'none';
+  listEl.innerHTML = reviews.map((review) => {
+    const date = review.createdAt?.toDate?.() ? review.createdAt.toDate() : null;
+    const dateStr = date ? date.toLocaleDateString() : '';
+    return `
+      <article class="review-card">
+        <div class="review-card__header">
+          <div class="review-card__rating" aria-label="Rating ${review.rating || 0} out of 5">${renderStars(review.rating)}</div>
+          <div class="review-card__meta">${review.name || 'Guest'} ${dateStr ? `· ${dateStr}` : ''}</div>
+        </div>
+        <h4 class="review-card__title">${review.title || 'Untitled review'}</h4>
+        <p class="review-card__body">${review.body || ''}</p>
+      </article>
+    `;
+  }).join('');
+}
+
+async function loadReviews(productId) {
+  const listEl = $('#reviews-list');
+  const emptyEl = $('#reviews-empty');
+  if (!listEl || !emptyEl) return;
+  emptyEl.textContent = 'Loading reviews...';
+  emptyEl.style.display = '';
+
+  if (!window.FirebaseAPI?.fetchReviews) {
+    emptyEl.textContent = 'Reviews are unavailable right now.';
+    return;
+  }
+
+  try {
+    const docs = await window.FirebaseAPI.fetchReviews(productId, 10);
+    state.reviews = docs;
+    renderReviews(listEl, emptyEl, docs);
+  } catch (err) {
+    console.error('Failed to load reviews', err);
+    emptyEl.textContent = 'Could not load reviews right now.';
+  }
+}
+
+function bindReviewForm(product) {
+  const form = $('#review-form');
+  const statusEl = $('#review-status');
+  if (!form || !statusEl || !product) return;
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const name = form['reviewer-name'].value.trim();
+    const rating = Number(form.rating.value);
+    const title = form['review-title'].value.trim();
+    const body = form['review-body'].value.trim();
+
+    if (!rating || rating < 1 || rating > 5) {
+      statusEl.textContent = 'Please select a rating.';
+      statusEl.className = 'form-status error';
+      return;
+    }
+
+    statusEl.textContent = 'Sending review...';
+    statusEl.className = 'form-status pending';
+    submitBtn?.setAttribute('disabled', 'true');
+    try {
+      if (!window.FirebaseAPI?.saveReview) {
+        throw new Error('Reviews service unavailable');
+      }
+      await window.FirebaseAPI.saveReview({
+        productId: product.id,
+        rating,
+        title: title || null,
+        body: body || null,
+        name: name || 'Guest'
+      });
+      statusEl.textContent = 'Thanks for sharing your review!';
+      statusEl.className = 'form-status success';
+      form.reset();
+      // Prepend the new review to the list locally
+      const newReview = { productId: product.id, rating, title, body, name: name || 'Guest' };
+      state.reviews = [newReview, ...state.reviews];
+      renderReviews($('#reviews-list'), $('#reviews-empty'), state.reviews);
+    } catch (err) {
+      console.error('Review submit error', err);
+      statusEl.textContent = 'Could not submit review. Please try again.';
+      statusEl.className = 'form-status error';
+    } finally {
+      submitBtn?.removeAttribute('disabled');
+      setTimeout(() => {
+        statusEl.textContent = '';
+        statusEl.className = 'form-status';
+      }, 4000);
+    }
+  });
+}
 
 function renderProductDetail() {
   const container = $('#product-detail');
@@ -10,6 +120,8 @@ function renderProductDetail() {
     container.innerHTML = '<p class="cart-empty">We couldn\'t find that tee. Browse the store for more vintage finds.</p>';
     return;
   }
+
+  state.product = product;
 
   // Mark this product as recently viewed so it appears on the homepage list
   window.Shop.addRecent(product.id);
@@ -64,16 +176,20 @@ function renderProductDetail() {
   `;
 
   const form = $('#product-form');
-  if (!form) return;
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const data = new FormData(form);
-    const size = data.get('size');
-    const color = data.get('color');
-    const quantity = Math.max(1, Number(data.get('quantity')) || 1);
-    window.Shop.addItem(product, { size, color, qty: quantity });
-    window.Shop.renderMiniCart();
-  });
+  if (form) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const size = data.get('size');
+      const color = data.get('color');
+      const quantity = Math.max(1, Number(data.get('quantity')) || 1);
+      window.Shop.addItem(product, { size, color, qty: quantity });
+      window.Shop.renderMiniCart();
+    });
+  }
+
+  bindReviewForm(product);
+  loadReviews(product.id);
 }
 
 document.addEventListener('DOMContentLoaded', renderProductDetail);

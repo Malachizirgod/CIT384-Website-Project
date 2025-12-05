@@ -4,7 +4,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // 1) Paste your config from the Firebase console here:
 const firebaseConfig = {
@@ -56,6 +56,36 @@ async function saveContact(msg) {
   });
 }
 
+async function saveReview(review) {
+  // review = { productId, rating, title, body, name }
+  await ensureAuth();
+  return addDoc(collection(db, "reviews"), {
+    ...review,
+    createdAt: serverTimestamp()
+  });
+}
+
+async function fetchReviews(productId, limitCount = 10) {
+  await ensureAuth();
+  const q = query(
+    collection(db, "reviews"),
+    where("productId", "==", productId),
+    orderBy("createdAt", "desc"),
+    limit(limitCount)
+  );
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+}
+
+async function saveFeedback(payload) {
+  // payload = { email?, rating?, likelihood?, comments? }
+  await ensureAuth();
+  return addDoc(collection(db, "feedback"), {
+    ...payload,
+    createdAt: serverTimestamp()
+  });
+}
+
 // Expose to non-module scripts (main.js, cart.js)
-window.FirebaseAPI = { saveOrder, saveContact };
+window.FirebaseAPI = { saveOrder, saveContact, saveReview, fetchReviews, saveFeedback };
 console.log("[Firebase] ready");

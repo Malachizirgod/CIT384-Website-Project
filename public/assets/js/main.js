@@ -431,15 +431,88 @@
     const statusEl = $('#form-status');
     if (!form || !statusEl) return;
 
-    form.addEventListener('submit', (e) => {
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const nameInput = form.elements['name'];
+    const emailInput = form.elements['email'];
+    const messageInput = form.elements['message'];
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      statusEl.textContent = "Thanks! We'll be in touch soon.";
-      statusEl.className = 'form-status success';
-      form.reset();
-      setTimeout(() => {
-        statusEl.textContent = '';
-        statusEl.className = 'form-status';
-      }, 4000);
+      const name = nameInput?.value.trim() || '';
+      const email = emailInput?.value.trim() || '';
+      const message = messageInput?.value.trim() || '';
+      if (!name || !email || !message) {
+        statusEl.textContent = 'Please fill out all fields.';
+        statusEl.className = 'form-status error';
+        return;
+      }
+
+      statusEl.textContent = 'Sending...';
+      statusEl.className = 'form-status pending';
+      submitBtn?.setAttribute('disabled', 'true');
+      try {
+        if (!window.FirebaseAPI?.saveContact) {
+          throw new Error('Contact service unavailable');
+        }
+        await window.FirebaseAPI.saveContact({ name, email, message });
+        statusEl.textContent = "Thanks! We'll be in touch soon.";
+        statusEl.className = 'form-status success';
+        form.reset();
+      } catch (err) {
+        console.error('Contact form error', err);
+        statusEl.textContent = 'Could not send message. Please try again.';
+        statusEl.className = 'form-status error';
+      } finally {
+        submitBtn?.removeAttribute('disabled');
+        setTimeout(() => {
+          statusEl.textContent = '';
+          statusEl.className = 'form-status';
+        }, 4000);
+      }
+    });
+  };
+
+  // --- Feedback Survey ---
+  const initFeedbackForm = () => {
+    const form = $('#feedback-form');
+    const statusEl = $('#feedback-status');
+    if (!form || !statusEl) return;
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const experience = form.experience.value || '';
+      const likelihood = form.likelihood.value || '';
+      const comments = form.comments.value.trim();
+      const email = form.feedbackEmail?.value.trim();
+
+      statusEl.textContent = 'Sending...';
+      statusEl.className = 'form-status pending';
+      submitBtn?.setAttribute('disabled', 'true');
+      try {
+        if (!window.FirebaseAPI?.saveFeedback) {
+          throw new Error('Feedback service unavailable');
+        }
+        await window.FirebaseAPI.saveFeedback({
+          experience,
+          likelihood,
+          comments,
+          email: email || null
+        });
+        statusEl.textContent = 'Thanks for the feedback!';
+        statusEl.className = 'form-status success';
+        form.reset();
+      } catch (err) {
+        console.error('Feedback error', err);
+        statusEl.textContent = 'Could not send feedback. Please try again.';
+        statusEl.className = 'form-status error';
+      } finally {
+        submitBtn?.removeAttribute('disabled');
+        setTimeout(() => {
+          statusEl.textContent = '';
+          statusEl.className = 'form-status';
+        }, 4000);
+      }
     });
   };
   
@@ -689,6 +762,7 @@
     initMobileNav();
     initSearch();
     initContactForm();
+    initFeedbackForm();
     initCouponModal();
     updateCartCount();
 

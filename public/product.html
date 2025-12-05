@@ -44,6 +44,36 @@
   <main class="container" id="main-content">
     <section id="product-detail" class="product-detail" aria-label="Product details"></section>
 
+    <section id="reviews-section" class="support-section support-section--compact" aria-labelledby="reviews-heading">
+      <div>
+        <h2 id="reviews-heading">Reviews &amp; fit notes</h2>
+        <p>Hear from alumni who picked up this tee. Add your take to help others choose the right fit.</p>
+        <div id="reviews-list" class="reviews-list" aria-live="polite"></div>
+        <p id="reviews-empty" class="form-status" role="status">No reviews yet. Be the first to share.</p>
+      </div>
+      <div class="contact-card contact-card--alt" role="form" aria-labelledby="reviews-heading">
+        <form id="review-form" novalidate>
+          <label for="reviewer-name">Name</label>
+          <input type="text" id="reviewer-name" name="reviewer-name" placeholder="Your name" autocomplete="name" required />
+          <label for="rating">Rating</label>
+          <select id="rating" name="rating" required>
+            <option value="">Select</option>
+            <option value="5">5 - Perfect</option>
+            <option value="4">4 - Great</option>
+            <option value="3">3 - Good</option>
+            <option value="2">2 - Fair</option>
+            <option value="1">1 - Rough</option>
+          </select>
+          <label for="review-title">Title</label>
+          <input type="text" id="review-title" name="review-title" placeholder="Great vintage find" />
+          <label for="review-body">Your review</label>
+          <textarea id="review-body" name="review-body" rows="4" placeholder="Share fit, feel, and campus spirit"></textarea>
+          <button type="submit" class="btn">Submit review</button>
+          <div id="review-status" class="form-status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
     <section class="support-section support-section--compact" aria-labelledby="support-heading">
       <div>
         <h2 id="support-heading">How to pick the perfect throwback</h2>
@@ -97,6 +127,7 @@
 
   <script src="assets/js/products.js"></script>
   <script src="assets/js/main.js"></script>
+  <script type="module" src="assets/js/firebase.js"></script>
   <script src="assets/js/product.js"></script>
 </body>
 </html>

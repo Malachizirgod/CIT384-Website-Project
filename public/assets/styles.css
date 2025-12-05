@@ -509,7 +509,9 @@ html[data-theme='dark'] .theme-btn .theme-icon-dark {
   margin-bottom: 1rem;
 }
 
-#contact-form {
+#contact-form,
+#feedback-form,
+#review-form {
   display: grid;
   gap: 1rem;
 }
@@ -1007,4 +1009,46 @@ textarea {
   .search-container.active .search-input {
     width: 180px;
   }
+}
+
+/* Reviews */
+.reviews-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.review-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.review-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.review-card__rating {
+  color: #F5A524;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.review-card__meta {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.review-card__title {
+  margin: 0 0 0.25rem;
+}
+
+.review-card__body {
+  margin: 0;
+  color: var(--text);
 }
