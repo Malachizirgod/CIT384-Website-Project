@@ -11,7 +11,8 @@ const firebaseConfig = {
   apiKey: "AIzaSyCtREM73BOd7bmixAoXMf5uBL1sVnwgUXw",
   authDomain: "vintage-college.firebaseapp.com",
   projectId: "vintage-college",
-  storageBucket: "vintage-college.firebasestorage.app",
+  // Use the appspot bucket; the console lists this under Storage > Bucket
+  storageBucket: "vintage-college.appspot.com",
   messagingSenderId: "123732278128",
   appId: "1:123732278128:web:b4e6fe8df20e270da92db5",
   measurementId: "G-4TWCXJ5G49"
