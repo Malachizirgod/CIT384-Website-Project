@@ -1,5 +1,3 @@
-<script type="module" src="assets/js/firebase.js"></script>
-
 "use strict";
 
 /**

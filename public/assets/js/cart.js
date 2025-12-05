@@ -1,5 +1,3 @@
-<script type="module" src="assets/js/firebase.js"></script>
-
 "use strict";
 
 // Cart page interactions
@@ -86,7 +84,7 @@ function updateQuantity(key, nextQty) {
 }
 
 async function onCheckout(){
-  const cart = getCart();
+  const cart = Shop.getCart();
   const items = Object.values(cart);
   if(items.length===0){ alert('Cart is empty'); return; }
 
