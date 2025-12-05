@@ -4,6 +4,37 @@
 const $ = (selector, root = document) => root.querySelector(selector);
 const Shop = window.Shop;
 
+// Build normalized cart lines with pricing for checkout
+function getCartLineItems() {
+  const entries = Object.entries(Shop.getCart() || {});
+  const items = [];
+  let subtotal = 0;
+  let quantity = 0;
+
+  for (const [key, qty] of entries) {
+    const [id, size, color] = key.split('_');
+    const product = Shop.findProduct(id);
+    if (!product || !qty) continue;
+    const lineTotal = product.price * qty;
+    subtotal += lineTotal;
+    quantity += qty;
+    items.push({
+      id,
+      name: product.name,
+      price: product.price,
+      qty,
+      size,
+      color,
+      lineTotal
+    });
+  }
+
+  const discount = quantity >= 3 ? subtotal * 0.15 : 0;
+  const total = subtotal - discount;
+
+  return { items, subtotal, discount, total, quantity };
+}
+
 // renderCart(): renders full cart list and summary
 function renderCart() {
   const cartItems = $('#cart-items');
@@ -35,7 +66,7 @@ function renderCart() {
         <img src="${product.img}" alt="${product.name}" loading="lazy" />
         <div>
           <h3>${product.name}</h3>
-          <p class="cart-line__meta">Size ${size} · ${color}</p>
+          <p class="cart-line__meta">Size ${size} - ${color}</p>
           <div class="cart-line__actions">
             <div class="qty-stepper" data-key="${key}">
               <button type="button" data-step="-1" aria-label="Decrease quantity">-</button>
@@ -60,8 +91,21 @@ function renderCart() {
       <div class="summary-row"><span>Shipping</span><span>Free</span></div>
       <div class="summary-total"><span>Estimated total</span><span>${Shop.money(total)}</span></div>
       <p class="summary-note">Bundle savings unlock automatically once three tees are in your cart.</p>
+      <form id="checkout-form" class="checkout-form">
+        <label for="buyer-email">Email (optional, for your receipt)</label>
+        <input type="email" id="buyer-email" name="buyer-email" placeholder="you@example.com" autocomplete="email" />
+        <button type="submit" class="btn">Place order</button>
+      </form>
     </div>
   `;
+
+  const checkoutForm = $('#checkout-form', cartSummary);
+  if (checkoutForm) {
+    checkoutForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      onCheckout();
+    });
+  }
 
   if (cartMessage) cartMessage.textContent = '';
   Shop.renderMiniCart();
@@ -84,29 +128,37 @@ function updateQuantity(key, nextQty) {
 }
 
 async function onCheckout(){
-  const cart = Shop.getCart();
-  const items = Object.values(cart);
-  if(items.length===0){ alert('Cart is empty'); return; }
+  const { items, subtotal, discount, total, quantity } = getCartLineItems();
+  if (!items.length) { alert('Cart is empty'); return; }
 
-  const email = $('#buyer-email')?.value.trim() || null;
-  const coupon = localStorage.getItem('campus_coupon_revealed_v1') === '1' ? 'CSUN10' : null;
-  const subtotal = items.reduce((s,i)=> s + i.price*i.qty, 0);
-  const discount = coupon ? subtotal * 0.10 : 0;
-  const total = subtotal - discount;
+  const email = $('#buyer-email')?.value.trim() || '';
+  const cartMessage = $('#cart-message');
 
-  // ➜ NEW: save order in Firestore
+  // Save order in Firestore
   try {
+    if (!window.FirebaseAPI || !window.FirebaseAPI.saveOrder) {
+      throw new Error('Firebase not initialized');
+    }
     await window.FirebaseAPI.saveOrder({
       items,
       subtotal,
       discount,
       total,
-      coupon: coupon || null,
+      coupon: quantity >= 3 ? 'ALUM15' : null,
       email: email || null
     });
-    console.log('Order saved to Firestore');
+    if (cartMessage) cartMessage.textContent = 'Order placed! We saved it to your Firebase collection.';
+    // Clear cart after successful save
+    Object.keys(Shop.getCart()).forEach((key) => Shop.updateCartQuantity(key, 0, { silent: true }));
+    renderCart();
   } catch (e) {
     console.error('Failed to save order', e);
+    const friendly = e?.message || 'Could not reach the database right now.';
+    if (cartMessage) {
+      cartMessage.textContent = `Order not placed: ${friendly}`;
+    } else {
+      alert(`Order not placed: ${friendly}`);
+    }
   }
 
   // ...your existing confirmation UI, confetti, and localStorage cleanup
