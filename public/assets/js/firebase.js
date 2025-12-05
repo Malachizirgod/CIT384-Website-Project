@@ -8,12 +8,13 @@ import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.g
 
 // 1) Paste your config from the Firebase console here:
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCtREM73BOd7bmixAoXMf5uBL1sVnwgUXw",
+  authDomain: "vintage-college.firebaseapp.com",
+  projectId: "vintage-college",
+  storageBucket: "vintage-college.firebasestorage.app",
+  messagingSenderId: "123732278128",
+  appId: "1:123732278128:web:b4e6fe8df20e270da92db5",
+  measurementId: "G-4TWCXJ5G49"
 };
 
 // 2) Init
