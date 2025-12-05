@@ -1,3 +1,5 @@
+<script type="module" src="assets/js/firebase.js"></script>
+
 "use strict";
 
 // Cart page interactions
@@ -81,6 +83,35 @@ function updateQuantity(key, nextQty) {
   } else {
     cartMessage.textContent = product ? `${product.name} updated to ${nextQty} in your cart.` : 'Cart updated.';
   }
+}
+
+async function onCheckout(){
+  const cart = getCart();
+  const items = Object.values(cart);
+  if(items.length===0){ alert('Cart is empty'); return; }
+
+  const email = $('#buyer-email')?.value.trim() || null;
+  const coupon = localStorage.getItem('campus_coupon_revealed_v1') === '1' ? 'CSUN10' : null;
+  const subtotal = items.reduce((s,i)=> s + i.price*i.qty, 0);
+  const discount = coupon ? subtotal * 0.10 : 0;
+  const total = subtotal - discount;
+
+  // ➜ NEW: save order in Firestore
+  try {
+    await window.FirebaseAPI.saveOrder({
+      items,
+      subtotal,
+      discount,
+      total,
+      coupon: coupon || null,
+      email: email || null
+    });
+    console.log('Order saved to Firestore');
+  } catch (e) {
+    console.error('Failed to save order', e);
+  }
+
+  // ...your existing confirmation UI, confetti, and localStorage cleanup
 }
 
 document.addEventListener('DOMContentLoaded', () => {
