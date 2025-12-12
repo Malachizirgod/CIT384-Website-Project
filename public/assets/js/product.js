@@ -160,17 +160,6 @@ function renderProductDetail() {
   container.innerHTML = `
     <div class="product-page">
       <div class="product-gallery">
-        <div class="product-thumbs" role="list">
-          ${galleryImages
-            .map(
-              (src, index) => `
-            <button class="product-thumb ${index === 0 ? "is-active" : ""}" role="listitem" data-src="${src}" aria-label="View image ${index + 1}">
-              <img src="${src}" alt="${product.name} thumbnail ${index + 1}" loading="lazy" />
-            </button>
-          `
-            )
-            .join("")}
-        </div>
         <div class="product-hero">
           <img id="hero-image" src="${galleryImages[0]}" alt="${product.name}" />
         </div>
@@ -277,16 +266,6 @@ function renderProductDetail() {
   favoriteBtn?.addEventListener("click", () => {
     if (window.Shop?.addRecent) window.Shop.addRecent(product.id);
     alert("Saved to favorites (demo).");
-  });
-
-  const hero = $("#hero-image");
-  const thumbs = document.querySelectorAll(".product-thumb");
-  thumbs.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      thumbs.forEach((b) => b.classList.remove("is-active"));
-      btn.classList.add("is-active");
-      if (hero) hero.src = btn.dataset.src;
-    });
   });
 
   bindReviewForm(product);

@@ -1062,34 +1062,7 @@ textarea {
 }
 
 .product-gallery {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 1rem;
-}
-
-.product-thumbs {
-  display: grid;
-  gap: 0.5rem;
-}
-
-.product-thumb {
-  border: 1px solid var(--border);
-  background: var(--panel);
-  border-radius: 10px;
-  padding: 4px;
-  cursor: pointer;
-  transition: border-color 0.2s, transform 0.15s;
-}
-
-.product-thumb.is-active {
-  border-color: var(--brand);
-  box-shadow: 0 0 0 2px var(--brand-light);
-}
-
-.product-thumb img {
-  width: 100%;
   display: block;
-  border-radius: 8px;
 }
 
 .product-hero {
