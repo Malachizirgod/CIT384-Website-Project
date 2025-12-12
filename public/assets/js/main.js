@@ -3,7 +3,7 @@
 /**
  * main.js
  *
- * This file contains the core application logic for the Campus Shop.
+ * This file contains the core application logic for the Vintage College shop.
  * It handles state management, UI rendering, event handling, and accessibility.
  *
  * - Shop: A global namespace for all application methods.
@@ -64,10 +64,10 @@
   };
 
   const STORAGE_KEYS = {
-    CART: "campus_shop_cart",
-    THEME: "campus_shop_theme",
-    RECENT: "campus_shop_recent",
-    COUPON: "campus_shop_coupon"
+    CART: "vintage_college_cart",
+    THEME: "vintage_college_theme",
+    RECENT: "vintage_college_recent",
+    COUPON: "vintage_college_coupon"
   };
 
   // Safely parse JSON from localStorage, with a fallback to a default value.
@@ -777,7 +777,7 @@
       yearEl.textContent = new Date().getFullYear();
     }
 
-    console.log("Campus Shop initialized!");
+    console.log("Vintage College initialized!");
   };
 
   // Defer initialization until the DOM is fully loaded.
