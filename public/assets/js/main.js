@@ -23,9 +23,6 @@
   window.CATALOG = Array.isArray(window.CATALOG) ? window.CATALOG : [];
 
   const NAV_LINKS = [
-    { label: 'Our Story', href: 'index.html#our-story' },
-    { label: 'Shop Tees', href: 'index.html#products' },
-    { label: 'Support', href: 'index.html#support' },
     { label: 'Cart', href: 'cart.html' }
   ];
 
